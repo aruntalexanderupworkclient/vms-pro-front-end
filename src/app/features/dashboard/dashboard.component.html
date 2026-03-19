@@ -1,0 +1,74 @@
+<div class="dashboard">
+  <!-- Stat Cards -->
+  <div class="stat-cards">
+    <div class="stat-card card" *ngFor="let stat of stats">
+      <div class="stat-icon" [style.background]="stat.bgColor">
+        <span class="material-icons" [style.color]="stat.color">{{ stat.icon }}</span>
+      </div>
+      <div class="stat-info">
+        <div class="stat-value">{{ stat.value }}</div>
+        <div class="stat-label">{{ stat.label }}</div>
+      </div>
+      <div class="stat-trend" [class.positive]="stat.trend.startsWith('+')" [class.negative]="stat.trend.startsWith('-')">
+        {{ stat.trend }}
+      </div>
+    </div>
+  </div>
+
+  <!-- Charts Row -->
+  <div class="charts-row">
+    <div class="chart-card card">
+      <h3>Visitors Per Day</h3>
+      <div class="chart-container">
+        <canvas baseChart
+                [datasets]="barChartData"
+                [labels]="barChartLabels"
+                [options]="barChartOptions"
+                [chartType]="barChartType">
+        </canvas>
+      </div>
+    </div>
+    <div class="chart-card card">
+      <h3>Token Types Distribution</h3>
+      <div class="chart-container">
+        <canvas baseChart
+                [data]="doughnutChartData"
+                [labels]="doughnutChartLabels"
+                [colors]="doughnutChartColors"
+                [options]="doughnutChartOptions"
+                [chartType]="doughnutChartType">
+        </canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent Visitors -->
+  <div class="card">
+    <h3>Recent Visitors</h3>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Host</th>
+          <th>Purpose</th>
+          <th>Check-in Time</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let v of recentVisitors">
+          <td>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <div class="avatar avatar-sm">{{ v.name?.charAt(0) }}</div>
+              {{ v.name }}
+            </div>
+          </td>
+          <td>{{ v.hostName }}</td>
+          <td>{{ v.purpose }}</td>
+          <td>{{ v.checkIn | date:'short' }}</td>
+          <td><span [class]="getStatusBadgeClass(v.status)">{{ v.status }}</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

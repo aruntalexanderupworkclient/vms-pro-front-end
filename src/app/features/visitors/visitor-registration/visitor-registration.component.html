@@ -1,0 +1,81 @@
+<div class="visitor-registration">
+  <h2>Visitor Registration</h2>
+
+  <div class="reg-grid">
+    <!-- Left: Form -->
+    <div class="card">
+      <h3>Visitor Details</h3>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" [(ngModel)]="visitor.name" placeholder="Enter full name" required>
+        </div>
+        <div class="form-group">
+          <label>ID Type</label>
+          <select [(ngModel)]="visitor.idType">
+            <option *ngFor="let t of idTypes" [value]="t">{{ t }}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>ID Number</label>
+          <input type="text" [(ngModel)]="visitor.idNumber" placeholder="Enter ID number">
+        </div>
+        <div class="form-group">
+          <label>Phone</label>
+          <input type="tel" [(ngModel)]="visitor.phone" placeholder="+1234567890">
+        </div>
+        <div class="form-group full-width">
+          <label>Purpose of Visit</label>
+          <input type="text" [(ngModel)]="visitor.purpose" placeholder="e.g. Business Meeting">
+        </div>
+        <div class="form-group">
+          <label>Host</label>
+          <div class="host-search">
+            <input type="text" [(ngModel)]="hostSearch" (input)="filterHosts()" (focus)="showHostDropdown = true" placeholder="Search host...">
+            <div class="host-dropdown" *ngIf="showHostDropdown && filteredHosts.length">
+              <div class="host-option" *ngFor="let h of filteredHosts" (click)="selectHost(h)">
+                <strong>{{ h.name }}</strong>
+                <span class="text-sm text-secondary">{{ h.unit }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Expected Duration</label>
+          <input type="text" [(ngModel)]="visitor.expectedDuration" placeholder="e.g. 2 hours">
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: Photo + Summary -->
+    <div class="right-panel">
+      <div class="card photo-card">
+        <h3>Photo Capture</h3>
+        <div class="photo-box" [class.captured]="photoCaptured">
+          <span class="material-icons" *ngIf="!photoCaptured">photo_camera</span>
+          <span class="material-icons captured-icon" *ngIf="photoCaptured">check_circle</span>
+          <p *ngIf="!photoCaptured">Webcam preview area</p>
+          <p *ngIf="photoCaptured">Photo captured</p>
+        </div>
+        <button class="btn btn-secondary btn-full" (click)="capturePhoto()" style="margin-top:16px">
+          <span class="material-icons">camera_alt</span>
+          {{ photoCaptured ? 'Retake Photo' : 'Capture Photo' }}
+        </button>
+      </div>
+
+      <div class="card summary-card" *ngIf="visitor.name">
+        <h3>Summary</h3>
+        <div class="summary-row"><span>Name:</span><strong>{{ visitor.name }}</strong></div>
+        <div class="summary-row"><span>ID:</span><strong>{{ visitor.idType }} — {{ visitor.idNumber }}</strong></div>
+        <div class="summary-row"><span>Host:</span><strong>{{ visitor.hostName || 'Not selected' }}</strong></div>
+        <div class="summary-row"><span>Purpose:</span><strong>{{ visitor.purpose }}</strong></div>
+      </div>
+
+      <button class="btn btn-primary btn-full btn-lg" (click)="checkIn()"
+              [disabled]="!visitor.name || !visitor.hostId">
+        <span class="material-icons">login</span>
+        Check In
+      </button>
+    </div>
+  </div>
+</div>

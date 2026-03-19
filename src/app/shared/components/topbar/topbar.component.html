@@ -1,0 +1,34 @@
+<header class="topbar">
+  <div class="topbar-left">
+    <button class="topbar-hamburger" (click)="onToggleSidebar()">
+      <span class="material-icons">menu</span>
+    </button>
+    <h2 class="topbar-title">{{ pageTitle }}</h2>
+  </div>
+  <div class="topbar-right">
+    <!-- Notification Bell -->
+    <button class="topbar-icon-btn">
+      <span class="material-icons">notifications</span>
+      <span class="notification-badge">3</span>
+    </button>
+
+    <!-- User Menu -->
+    <div class="user-menu" (click)="toggleDropdown()">
+      <div class="avatar">{{ initials }}</div>
+      <span class="user-name" *ngIf="user">{{ user.fullName }}</span>
+      <span class="material-icons arrow">expand_more</span>
+
+      <!-- Dropdown -->
+      <div class="dropdown" *ngIf="showDropdown">
+        <a class="dropdown-item">
+          <span class="material-icons">person</span>
+          Profile
+        </a>
+        <a class="dropdown-item" (click)="logout()">
+          <span class="material-icons">logout</span>
+          Logout
+        </a>
+      </div>
+    </div>
+  </div>
+</header>

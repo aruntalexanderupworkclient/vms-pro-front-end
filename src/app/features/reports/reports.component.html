@@ -1,0 +1,89 @@
+<div class="reports">
+  <div class="page-header">
+    <div class="header-left">
+      <div class="tab-bar">
+        <button [class.active]="activeTab === 'visitors'" (click)="activeTab = 'visitors'">Visitor Report</button>
+        <button [class.active]="activeTab === 'tokens'" (click)="activeTab = 'tokens'">Token Report</button>
+        <button [class.active]="activeTab === 'employees'" (click)="activeTab = 'employees'">Employee Report</button>
+      </div>
+    </div>
+    <div class="header-right">
+      <input type="date" [(ngModel)]="dateFrom" placeholder="From">
+      <input type="date" [(ngModel)]="dateTo" placeholder="To">
+      <button class="btn btn-secondary btn-sm" (click)="exportPdf()">
+        <span class="material-icons" style="font-size:16px">picture_as_pdf</span> Export PDF
+      </button>
+      <button class="btn btn-secondary btn-sm" (click)="exportExcel()">
+        <span class="material-icons" style="font-size:16px">table_chart</span> Export Excel
+      </button>
+    </div>
+  </div>
+
+  <!-- Visitor Report -->
+  <div *ngIf="activeTab === 'visitors'">
+    <div class="card">
+      <h3>Visitors Over Time</h3>
+      <div class="chart-container">
+        <canvas baseChart [datasets]="visitorChartData" [labels]="visitorChartLabels"
+                [options]="visitorChartOptions" [chartType]="visitorChartType"></canvas>
+      </div>
+    </div>
+    <div class="card" style="margin-top:20px">
+      <table class="data-table">
+        <thead>
+          <tr><th>Name</th><th>Host</th><th>Purpose</th><th>Check-in</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let v of visitors">
+            <td>{{ v.name }}</td><td>{{ v.hostName }}</td><td>{{ v.purpose }}</td>
+            <td>{{ v.checkIn | date:'short' }}</td>
+            <td><span [class]="v.status === 'checked-in' ? 'badge badge-green' : 'badge badge-blue'">{{ v.status }}</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Token Report -->
+  <div *ngIf="activeTab === 'tokens'">
+    <div class="card">
+      <h3>Tokens by Type</h3>
+      <div class="chart-container">
+        <canvas baseChart [datasets]="tokenChartData" [labels]="tokenChartLabels"
+                [options]="tokenChartOptions" [chartType]="tokenChartType"></canvas>
+      </div>
+    </div>
+    <div class="card" style="margin-top:20px">
+      <table class="data-table">
+        <thead>
+          <tr><th>Token No</th><th>Visitor</th><th>Type</th><th>Issued</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let t of tokens">
+            <td>{{ t.tokenNo }}</td><td>{{ t.visitorName }}</td><td>{{ t.type }}</td>
+            <td>{{ t.issueTime | date:'short' }}</td>
+            <td><span [class]="t.status === 'active' ? 'badge badge-green' : 'badge badge-red'">{{ t.status }}</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Employee Report -->
+  <div *ngIf="activeTab === 'employees'">
+    <div class="card">
+      <table class="data-table">
+        <thead>
+          <tr><th>Name</th><th>Department</th><th>Designation</th><th>ID</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let e of employees">
+            <td>{{ e.name }}</td><td>{{ e.department }}</td><td>{{ e.designation }}</td>
+            <td>{{ e.employeeId }}</td>
+            <td><span [class]="e.status === 'active' ? 'badge badge-green' : 'badge badge-red'">{{ e.status }}</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

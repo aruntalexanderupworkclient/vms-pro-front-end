@@ -1,0 +1,30 @@
+<div class="org-select-page">
+  <div class="org-select-content">
+    <!-- Logo -->
+    <div class="org-logo">
+      <div class="logo-icon-lg">
+        <span class="material-icons">verified_user</span>
+      </div>
+    </div>
+
+    <!-- Title -->
+    <h1 class="org-title">Welcome to VMS Pro</h1>
+    <p class="org-subtitle">Select your organisation type to get started</p>
+
+    <!-- Cards -->
+    <div class="org-cards">
+      <div class="org-card"
+           *ngFor="let card of orgCards"
+           (click)="selectOrg(card)">
+        <div class="org-card-icon" [style.background]="card.bgColor">
+          <span class="material-icons" [style.color]="card.color">{{ card.icon }}</span>
+        </div>
+        <h3 class="org-card-label">{{ card.label }}</h3>
+        <p class="org-card-subtitle">{{ card.subtitle }}</p>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <p class="org-footer">Trusted by 500+ organisations worldwide</p>
+  </div>
+</div>

@@ -1,0 +1,37 @@
+<div class="permission-page">
+  <div class="page-header">
+    <h2 style="margin:0">Permission Matrix</h2>
+    <button class="btn btn-primary" (click)="save()" [disabled]="saving">
+      <span class="material-icons">save</span>
+      {{ saving ? 'Saving...' : 'Save Changes' }}
+    </button>
+  </div>
+
+  <div class="card table-card">
+    <div class="table-scroll">
+      <table class="data-table permission-table">
+        <thead>
+          <tr>
+            <th>Module / Action</th>
+            <th *ngFor="let role of roles">{{ role.name }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let module of permissionModules">
+            <tr class="module-row">
+              <td colspan="100%" class="module-header">{{ module }}</td>
+            </tr>
+            <tr *ngFor="let action of permissionActions">
+              <td class="action-label">{{ action | titlecase }}</td>
+              <td *ngFor="let role of roles" class="checkbox-cell">
+                <input type="checkbox"
+                       [checked]="isChecked(role.id, getPermissionKey(module, action))"
+                       (change)="togglePermission(role.id, getPermissionKey(module, action))">
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

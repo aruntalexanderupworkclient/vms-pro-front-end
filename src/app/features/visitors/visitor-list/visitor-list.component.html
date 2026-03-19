@@ -1,0 +1,59 @@
+<div class="visitor-list">
+  <div class="page-header">
+    <div class="header-left">
+      <div class="search-box">
+        <span class="material-icons">search</span>
+        <input type="text" placeholder="Search visitors..." [(ngModel)]="searchTerm" (ngModelChange)="applyFilters()">
+      </div>
+      <select [(ngModel)]="statusFilter" (ngModelChange)="applyFilters()">
+        <option value="">All Status</option>
+        <option value="checked-in">Checked In</option>
+        <option value="checked-out">Checked Out</option>
+        <option value="pending">Pending</option>
+      </select>
+    </div>
+    <button class="btn btn-primary" (click)="registerVisitor()">
+      <span class="material-icons">person_add</span>
+      Register Visitor
+    </button>
+  </div>
+
+  <div class="card table-card">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Visitor</th>
+          <th>Host</th>
+          <th>Purpose</th>
+          <th>Check-in</th>
+          <th>Check-out</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let v of filteredVisitors">
+          <td>
+            <div class="user-cell">
+              <div class="avatar">{{ getInitials(v.name) }}</div>
+              <div>
+                <div class="visitor-name">{{ v.name }}</div>
+                <div class="visitor-id text-sm text-secondary">{{ v.idType }}: {{ v.idNumber }}</div>
+              </div>
+            </div>
+          </td>
+          <td>{{ v.hostName }}</td>
+          <td>{{ v.purpose }}</td>
+          <td>{{ v.checkIn | date:'short' }}</td>
+          <td>{{ v.checkOut ? (v.checkOut | date:'short') : '—' }}</td>
+          <td><span [class]="getStatusBadgeClass(v.status)">{{ v.status }}</span></td>
+          <td>
+            <button class="btn btn-sm btn-secondary" *ngIf="v.status === 'checked-in'" (click)="checkOut(v)">
+              Check Out
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

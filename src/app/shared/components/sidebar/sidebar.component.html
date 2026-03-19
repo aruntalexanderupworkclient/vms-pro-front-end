@@ -1,0 +1,43 @@
+<nav class="sidebar" [class.expanded]="mode === 'expanded'" [class.collapsed]="mode === 'collapsed'" [class.hidden-sidebar]="mode === 'hidden'">
+  <!-- Logo -->
+  <div class="sidebar-logo">
+    <div class="logo-icon">
+      <span class="material-icons">verified_user</span>
+    </div>
+    <span class="logo-text" *ngIf="mode === 'expanded'">VMS Pro</span>
+  </div>
+
+  <!-- Menu Items -->
+  <div class="sidebar-menu">
+    <ng-container *ngFor="let item of menuItems">
+      <!-- Section Header -->
+      <div class="menu-section" *ngIf="item.section && mode === 'expanded'">
+        {{ item.label }}
+      </div>
+      <div class="menu-section-collapsed" *ngIf="item.section && mode === 'collapsed'">
+        <span class="material-icons" style="font-size: 16px;">more_horiz</span>
+      </div>
+
+      <!-- Divider -->
+      <div class="menu-divider" *ngIf="item.divider"></div>
+
+      <!-- Menu Item -->
+      <a class="menu-item"
+         *ngIf="!item.section && !item.divider"
+         [class.active]="isActive(item.route)"
+         (click)="navigate(item.route)"
+         [title]="item.label">
+        <span class="material-icons menu-icon">{{ item.icon }}</span>
+        <span class="menu-label" *ngIf="mode === 'expanded'">{{ item.label }}</span>
+      </a>
+    </ng-container>
+  </div>
+
+  <!-- Logout -->
+  <div class="sidebar-footer">
+    <a class="menu-item" (click)="logout()" title="Logout">
+      <span class="material-icons menu-icon">logout</span>
+      <span class="menu-label" *ngIf="mode === 'expanded'">Logout</span>
+    </a>
+  </div>
+</nav>

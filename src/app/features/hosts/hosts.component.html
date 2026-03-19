@@ -1,0 +1,80 @@
+<div class="hosts">
+  <div class="page-header">
+    <div class="search-box">
+      <span class="material-icons">search</span>
+      <input type="text" placeholder="Search hosts..." [(ngModel)]="searchTerm" (ngModelChange)="applyFilter()">
+    </div>
+    <button class="btn btn-primary" (click)="openAdd()">
+      <span class="material-icons">add</span>
+      Add Host
+    </button>
+  </div>
+
+  <div class="card table-card">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Unit / Department</th>
+          <th>Contact</th>
+          <th>Organisation Type</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let host of filteredHosts">
+          <td><strong>{{ host.name }}</strong></td>
+          <td>{{ host.unit }}</td>
+          <td>{{ host.contact }}</td>
+          <td><span class="badge badge-blue">{{ host.orgType }}</span></td>
+          <td>
+            <span [class]="host.status === 'active' ? 'badge badge-green' : 'badge badge-red'">
+              {{ host.status }}
+            </span>
+          </td>
+          <td>
+            <div class="action-btns">
+              <button class="icon-btn" (click)="openEdit(host)"><span class="material-icons">edit</span></button>
+              <button class="icon-btn danger" (click)="deleteHost(host)"><span class="material-icons">delete</span></button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Slide-over -->
+  <div class="overlay-backdrop" *ngIf="showPanel" (click)="closePanel()"></div>
+  <div class="slide-over" *ngIf="showPanel">
+    <div class="panel-header">
+      <h2>{{ editMode ? 'Edit Host' : 'Add Host' }}</h2>
+      <button class="icon-btn" (click)="closePanel()"><span class="material-icons">close</span></button>
+    </div>
+    <form (ngSubmit)="save()">
+      <div class="form-group"><label>Name</label><input type="text" [(ngModel)]="currentHost.name" name="name" required></div>
+      <div class="form-group"><label>Unit / Department</label><input type="text" [(ngModel)]="currentHost.unit" name="unit"></div>
+      <div class="form-group"><label>Contact</label><input type="tel" [(ngModel)]="currentHost.contact" name="contact"></div>
+      <div class="form-group">
+        <label>Organisation Type</label>
+        <select [(ngModel)]="currentHost.orgType" name="orgType">
+          <option value="Hospital">Hospital</option>
+          <option value="Residential Tower">Residential Tower</option>
+          <option value="Corporate Office">Corporate Office</option>
+          <option value="Factory">Factory</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Status</label>
+        <select [(ngModel)]="currentHost.status" name="status">
+          <option value="active">Active</option>
+          <option value="inactive">Inactive</option>
+        </select>
+      </div>
+      <div class="panel-footer">
+        <button type="button" class="btn btn-secondary" (click)="closePanel()">Cancel</button>
+        <button type="submit" class="btn btn-primary">Save</button>
+      </div>
+    </form>
+  </div>
+</div>

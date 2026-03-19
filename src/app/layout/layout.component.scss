@@ -1,0 +1,43 @@
+.layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar-overlay {
+  display: none;
+}
+
+.main-content {
+  flex: 1;
+  min-height: 100vh;
+  transition: margin-left 0.25s ease;
+  background: #F3F4F6;
+}
+
+.page-content {
+  padding: 24px;
+  min-height: calc(100vh - 64px);
+}
+
+@media (max-width: 767px) {
+  .sidebar-overlay {
+    &.visible {
+      display: block;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.3);
+      z-index: 99;
+    }
+  }
+
+  .main-content {
+    margin-left: 0 !important;
+  }
+
+  .page-content {
+    padding: 16px;
+  }
+}

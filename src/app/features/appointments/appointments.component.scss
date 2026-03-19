@@ -1,0 +1,73 @@
+$primary: #2563EB;
+$border: #E5E7EB;
+$text-secondary: #6B7280;
+
+.appt-layout {
+  display: grid;
+  grid-template-columns: 2fr 3fr;
+  gap: 24px;
+  margin-top: 20px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.calendar-day {
+  border: 1px solid $border;
+  border-radius: 8px;
+  min-height: 120px;
+  overflow: hidden;
+}
+
+.day-header {
+  background: #F9FAFB;
+  padding: 8px;
+  text-align: center;
+  border-bottom: 1px solid $border;
+
+  .day-name { font-size: 11px; color: $text-secondary; display: block; text-transform: uppercase; }
+  .day-number { font-size: 18px; font-weight: 600; color: #111827; }
+}
+
+.day-appointments {
+  padding: 6px;
+}
+
+.appt-slot {
+  padding: 4px 6px;
+  border-radius: 4px;
+  margin-bottom: 4px;
+  font-size: 11px;
+
+  &.confirmed { background: rgba(16,185,129,0.1); border-left: 3px solid #10B981; }
+  &.pending { background: rgba(245,158,11,0.1); border-left: 3px solid #F59E0B; }
+
+  .appt-time { display: block; font-weight: 600; }
+  .appt-visitor { color: $text-secondary; }
+}
+
+.no-appt {
+  font-size: 11px;
+  color: #D1D5DB;
+  text-align: center;
+  padding: 8px;
+}
+
+@media (max-width: 1024px) {
+  .appt-layout { grid-template-columns: 1fr; }
+  .calendar-grid { grid-template-columns: repeat(4, 1fr); }
+}
+
+@media (max-width: 767px) {
+  .calendar-grid { grid-template-columns: repeat(2, 1fr); }
+}

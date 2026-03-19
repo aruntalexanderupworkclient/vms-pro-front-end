@@ -1,0 +1,17 @@
+$border: #E5E7EB;
+$text-secondary: #6B7280;
+
+.page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 12px; }
+.search-box { display: flex; align-items: center; gap: 8px; background: #fff; border: 1px solid $border; border-radius: 6px; padding: 8px 12px; width: 280px;
+  .material-icons { color: $text-secondary; font-size: 20px; }
+  input { border: none; outline: none; font-size: 14px; width: 100%; font-family: 'Inter', sans-serif; }
+}
+.table-card { padding: 0; overflow: hidden; }
+.icon-btn { background: none; border: none; cursor: pointer; padding: 6px; border-radius: 6px; color: $text-secondary; transition: all 0.15s;
+  &:hover { background: #F3F4F6; color: #111827; }
+  &.danger:hover { background: rgba(239,68,68,0.1); color: #EF4444; }
+  .material-icons { font-size: 18px; }
+}
+.action-btns { display: flex; gap: 4px; }
+.panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; h2 { margin: 0; } }
+.panel-footer { display: flex; justify-content: flex-end; gap: 12px; margin-top: 24px; padding-top: 16px; border-top: 1px solid $border; }

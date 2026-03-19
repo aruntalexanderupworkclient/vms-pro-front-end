@@ -1,0 +1,23 @@
+<div class="layout">
+  <!-- Sidebar Overlay (mobile) -->
+  <div class="sidebar-overlay"
+       *ngIf="sidebarMode === 'expanded'"
+       (click)="sidebarMode = 'hidden'"
+       [class.visible]="sidebarMode === 'expanded'">
+  </div>
+
+  <!-- Sidebar -->
+  <app-sidebar
+    [mode]="sidebarMode"
+    (modeChange)="onSidebarModeChange($event)">
+  </app-sidebar>
+
+  <!-- Main Content -->
+  <div class="main-content" [style.margin-left]="contentMargin">
+    <app-topbar (toggleSidebar)="toggleSidebar()"></app-topbar>
+    <div class="page-content">
+      <app-breadcrumb></app-breadcrumb>
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

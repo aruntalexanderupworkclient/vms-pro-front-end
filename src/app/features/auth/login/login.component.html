@@ -1,0 +1,78 @@
+<div class="login-page">
+  <!-- Left Panel - Decorative -->
+  <div class="login-left">
+    <div class="login-left-content">
+      <div class="illustration-icon">
+        <span class="material-icons">security</span>
+      </div>
+      <h2>Secure Visitor Management</h2>
+      <p>Streamline your visitor check-in process with advanced security features and real-time tracking.</p>
+      <div class="feature-list">
+        <div class="feature-item">
+          <span class="material-icons">check_circle</span>
+          <span>Real-time visitor tracking</span>
+        </div>
+        <div class="feature-item">
+          <span class="material-icons">check_circle</span>
+          <span>Token-based access control</span>
+        </div>
+        <div class="feature-item">
+          <span class="material-icons">check_circle</span>
+          <span>Multi-organisation support</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right Panel - Login Form -->
+  <div class="login-right">
+    <div class="login-form-card">
+      <!-- Logo -->
+      <div class="login-logo">
+        <div class="logo-icon">
+          <span class="material-icons">verified_user</span>
+        </div>
+        <span class="logo-text">VMS Pro</span>
+      </div>
+
+      <h1>Welcome Back</h1>
+      <p class="login-desc">Sign in to your account to continue</p>
+
+      <!-- Error -->
+      <div class="login-error" *ngIf="error">
+        <span class="material-icons">error</span>
+        {{ error }}
+      </div>
+
+      <!-- Form -->
+      <form (ngSubmit)="onLogin()">
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" [(ngModel)]="email" name="email"
+                 placeholder="admin@vmspro.com" required>
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" [(ngModel)]="password" name="password"
+                 placeholder="Enter your password" required>
+        </div>
+
+        <div class="form-actions">
+          <a class="forgot-link">Forgot Password?</a>
+        </div>
+
+        <button type="button" class="btn btn-primary btn-full" (click)="onSsoLogin()">
+          <span class="material-icons">login</span>
+          Login with SSO
+        </button>
+
+        <button type="button" class="btn btn-secondary btn-full" (click)="onDemoLogin()" [disabled]="loading">
+          <span class="material-icons">play_arrow</span>
+          Login as Demo User
+        </button>
+
+        <div id="google-btn"></div>
+      </form>
+    </div>
+  </div>
+</div>

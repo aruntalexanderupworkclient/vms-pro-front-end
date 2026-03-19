@@ -1,0 +1,67 @@
+<div class="appointments">
+  <h2>Appointments</h2>
+
+  <div class="appt-layout">
+    <!-- Left: Form -->
+    <div class="card form-panel">
+      <h3>New Appointment</h3>
+      <form (ngSubmit)="saveAppointment()">
+        <div class="form-group">
+          <label>Visitor Name</label>
+          <input type="text" [(ngModel)]="newAppointment.visitorName" name="visitorName" required placeholder="Enter visitor name">
+        </div>
+        <div class="form-group">
+          <label>Host</label>
+          <select [(ngModel)]="newAppointment.hostId" name="hostId" (ngModelChange)="onHostChange()" required>
+            <option [ngValue]="null" disabled>Select host</option>
+            <option *ngFor="let h of hosts" [value]="h.id">{{ h.name }} — {{ h.unit }}</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Date</label>
+            <input type="date" [(ngModel)]="newAppointment.date" name="date" required>
+          </div>
+          <div class="form-group">
+            <label>Time</label>
+            <input type="time" [(ngModel)]="newAppointment.time" name="time" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Purpose</label>
+          <input type="text" [(ngModel)]="newAppointment.purpose" name="purpose" placeholder="Purpose of visit">
+        </div>
+        <div class="form-group">
+          <label>Notes</label>
+          <textarea [(ngModel)]="newAppointment.notes" name="notes" placeholder="Additional notes"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:100%">
+          <span class="material-icons">event</span>
+          Book Appointment
+        </button>
+      </form>
+    </div>
+
+    <!-- Right: Calendar -->
+    <div class="card calendar-panel">
+      <h3>Upcoming Schedule</h3>
+      <div class="calendar-grid">
+        <div class="calendar-day" *ngFor="let day of getCalendarDates()">
+          <div class="day-header">
+            <span class="day-name">{{ day.date | date:'EEE' }}</span>
+            <span class="day-number">{{ day.date | date:'d' }}</span>
+          </div>
+          <div class="day-appointments">
+            <div class="appt-slot" *ngFor="let appt of day.appointments"
+                 [class.confirmed]="appt.status === 'confirmed'"
+                 [class.pending]="appt.status === 'pending'">
+              <span class="appt-time">{{ appt.time }}</span>
+              <span class="appt-visitor">{{ appt.visitorName }}</span>
+            </div>
+            <div class="no-appt" *ngIf="!day.appointments.length">No appointments</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

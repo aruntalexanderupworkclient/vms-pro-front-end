@@ -1,0 +1,38 @@
+$primary: #2563EB;
+$border: #E5E7EB;
+$text-secondary: #6B7280;
+
+.page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 12px; }
+.header-left { display: flex; gap: 12px; }
+.header-right { display: flex; gap: 8px; align-items: center;
+  input[type="date"] { padding: 8px 12px; border: 1px solid $border; border-radius: 6px; font-size: 13px; font-family: 'Inter', sans-serif; }
+}
+
+.tab-bar {
+  display: flex;
+  background: #fff;
+  border: 1px solid $border;
+  border-radius: 6px;
+  overflow: hidden;
+
+  button {
+    padding: 8px 16px;
+    border: none;
+    background: none;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    color: $text-secondary;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.15s;
+
+    &.active {
+      background: $primary;
+      color: #fff;
+    }
+
+    &:hover:not(.active) { background: #F9FAFB; }
+  }
+}
+
+.chart-container { height: 280px; position: relative; }

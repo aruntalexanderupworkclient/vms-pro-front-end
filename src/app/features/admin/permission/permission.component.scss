@@ -1,0 +1,42 @@
+$border: #E5E7EB;
+$text-secondary: #6B7280;
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.table-card { padding: 0; overflow: hidden; }
+
+.table-scroll { overflow-x: auto; }
+
+.permission-table {
+  min-width: 600px;
+
+  .module-header {
+    font-weight: 600;
+    background: #F3F4F6;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #374151;
+  }
+
+  .action-label {
+    padding-left: 32px;
+    color: $text-secondary;
+  }
+
+  .checkbox-cell {
+    text-align: center;
+
+    input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+      accent-color: #2563EB;
+    }
+  }
+}

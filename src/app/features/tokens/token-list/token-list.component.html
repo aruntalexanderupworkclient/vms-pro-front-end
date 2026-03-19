@@ -1,0 +1,46 @@
+<div class="token-list">
+  <div class="page-header">
+    <div class="header-left">
+      <div class="search-box">
+        <span class="material-icons">search</span>
+        <input type="text" placeholder="Search tokens..." [(ngModel)]="searchTerm" (ngModelChange)="applyFilters()">
+      </div>
+      <select [(ngModel)]="typeFilter" (ngModelChange)="applyFilters()">
+        <option value="">All Types</option>
+        <option *ngFor="let t of tokenTypes" [value]="t">{{ t }}</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="card table-card">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Token No</th>
+          <th>Visitor Name</th>
+          <th>Type</th>
+          <th>Issue Time</th>
+          <th>Expiry</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let t of filteredTokens">
+          <td><strong>{{ t.tokenNo }}</strong></td>
+          <td>{{ t.visitorName }}</td>
+          <td><span [class]="getTypeBadgeClass(t.type)">{{ t.type }}</span></td>
+          <td>{{ t.issueTime | date:'short' }}</td>
+          <td>{{ t.expiry | date:'short' }}</td>
+          <td><span [class]="getStatusBadgeClass(t.status)">{{ t.status }}</span></td>
+          <td>
+            <button class="btn btn-sm btn-secondary">
+              <span class="material-icons" style="font-size:16px">visibility</span>
+              View
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

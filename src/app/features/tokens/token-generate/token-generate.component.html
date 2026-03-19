@@ -1,0 +1,54 @@
+<div class="token-generate">
+  <!-- Visitor Summary -->
+  <div class="card visitor-summary" *ngIf="visitor">
+    <div class="avatar avatar-lg">{{ visitor.name?.charAt(0) }}</div>
+    <div>
+      <h3>{{ visitor.name }}</h3>
+      <p class="text-secondary">Host: {{ visitor.hostName }}</p>
+    </div>
+  </div>
+
+  <!-- Token Type Selector -->
+  <div class="card" *ngIf="!tokenGenerated">
+    <h3>Select Token Type</h3>
+    <div class="type-grid">
+      <div class="type-card"
+           *ngFor="let tt of tokenTypes"
+           [class.selected]="selectedType === tt.type"
+           (click)="selectedType = tt.type">
+        <span class="material-icons">{{ tt.icon }}</span>
+        <strong>{{ tt.type }}</strong>
+        <span class="text-sm text-secondary">{{ tt.description }}</span>
+      </div>
+    </div>
+    <button class="btn btn-primary btn-lg" style="margin-top:24px" (click)="generateToken()" [disabled]="!visitor">
+      <span class="material-icons">qr_code_2</span>
+      Generate Token
+    </button>
+  </div>
+
+  <!-- Generated Token Preview -->
+  <div class="card token-preview" *ngIf="tokenGenerated && generatedToken">
+    <div class="token-success">
+      <span class="material-icons success-icon">check_circle</span>
+      <h2>Token Generated Successfully!</h2>
+    </div>
+    <div class="token-details">
+      <div class="qr-placeholder">
+        <span class="material-icons">qr_code_2</span>
+        <p>QR Code</p>
+      </div>
+      <div class="token-info">
+        <div class="token-number">{{ generatedToken.tokenNo }}</div>
+        <div class="detail-row"><span>Visitor:</span> {{ generatedToken.visitorName }}</div>
+        <div class="detail-row"><span>Type:</span> {{ generatedToken.type }}</div>
+        <div class="detail-row"><span>Issued:</span> {{ generatedToken.issueTime | date:'medium' }}</div>
+        <div class="detail-row"><span>Valid Until:</span> {{ generatedToken.expiry | date:'medium' }}</div>
+      </div>
+    </div>
+    <button class="btn btn-primary" (click)="done()">
+      <span class="material-icons">check</span>
+      Done
+    </button>
+  </div>
+</div>

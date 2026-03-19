@@ -1,0 +1,97 @@
+<div class="settings">
+  <h2>Settings</h2>
+
+  <div class="tab-bar">
+    <button [class.active]="activeTab === 'general'" (click)="activeTab = 'general'">General</button>
+    <button [class.active]="activeTab === 'branding'" (click)="activeTab = 'branding'">Branding</button>
+    <button [class.active]="activeTab === 'locations'" (click)="activeTab = 'locations'">Locations</button>
+    <button [class.active]="activeTab === 'notifications'" (click)="activeTab = 'notifications'">Notification Templates</button>
+    <button [class.active]="activeTab === 'industry'" (click)="activeTab = 'industry'">Industry Config</button>
+  </div>
+
+  <!-- General -->
+  <div class="card settings-card" *ngIf="activeTab === 'general'">
+    <h3>General Settings</h3>
+    <div class="form-grid">
+      <div class="form-group"><label>Company Name</label><input type="text" [(ngModel)]="generalSettings.companyName"></div>
+      <div class="form-group"><label>Timezone</label><input type="text" [(ngModel)]="generalSettings.timezone"></div>
+      <div class="form-group"><label>Date Format</label>
+        <select [(ngModel)]="generalSettings.dateFormat">
+          <option>DD/MM/YYYY</option><option>MM/DD/YYYY</option><option>YYYY-MM-DD</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Language</label>
+        <select [(ngModel)]="generalSettings.language">
+          <option>English</option><option>Hindi</option><option>Spanish</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Auto Check-out (hours)</label><input type="number" [(ngModel)]="generalSettings.autoCheckoutHours"></div>
+    </div>
+    <button class="btn btn-primary" (click)="save()" style="margin-top:16px">Save Changes</button>
+  </div>
+
+  <!-- Branding -->
+  <div class="card settings-card" *ngIf="activeTab === 'branding'">
+    <h3>Branding</h3>
+    <div class="form-grid">
+      <div class="form-group"><label>Primary Color</label><input type="color" [(ngModel)]="brandingSettings.primaryColor"></div>
+      <div class="form-group"><label>Logo URL</label><input type="text" [(ngModel)]="brandingSettings.logoUrl" placeholder="https://..."></div>
+      <div class="form-group full-width"><label>Welcome Message</label><input type="text" [(ngModel)]="brandingSettings.welcomeMessage"></div>
+    </div>
+    <button class="btn btn-primary" (click)="save()" style="margin-top:16px">Save Changes</button>
+  </div>
+
+  <!-- Locations -->
+  <div class="card settings-card" *ngIf="activeTab === 'locations'">
+    <h3>Locations</h3>
+    <table class="data-table">
+      <thead><tr><th>Name</th><th>Type</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr *ngFor="let loc of locations">
+          <td>{{ loc.name }}</td><td>{{ loc.type }}</td>
+          <td><span [class]="loc.status === 'active' ? 'badge badge-green' : 'badge badge-red'">{{ loc.status }}</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Notifications -->
+  <div class="card settings-card" *ngIf="activeTab === 'notifications'">
+    <h3>Notification Templates</h3>
+    <table class="data-table">
+      <thead><tr><th>Template</th><th>Channel</th><th>Enabled</th></tr></thead>
+      <tbody>
+        <tr *ngFor="let tmpl of notificationTemplates">
+          <td>{{ tmpl.name }}</td><td>{{ tmpl.channel }}</td>
+          <td>
+            <label class="toggle">
+              <input type="checkbox" [(ngModel)]="tmpl.enabled">
+              <span class="toggle-slider"></span>
+            </label>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <button class="btn btn-primary" (click)="save()" style="margin-top:16px">Save Changes</button>
+  </div>
+
+  <!-- Industry Config -->
+  <div class="card settings-card" *ngIf="activeTab === 'industry'">
+    <h3>Industry Configuration</h3>
+    <div class="form-grid">
+      <div class="form-group"><label>Organisation Type</label>
+        <select [(ngModel)]="industryConfig.orgType">
+          <option>Hospital</option><option>Residential Tower</option><option>Corporate Office</option><option>Factory</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Max Visit Duration (hours)</label><input type="number" [(ngModel)]="industryConfig.maxVisitDuration"></div>
+    </div>
+    <div class="checkbox-group">
+      <label><input type="checkbox" [(ngModel)]="industryConfig.requirePhoto"> Require Photo</label>
+      <label><input type="checkbox" [(ngModel)]="industryConfig.requireIdScan"> Require ID Scan</label>
+      <label><input type="checkbox" [(ngModel)]="industryConfig.enableTokens"> Enable Tokens</label>
+      <label><input type="checkbox" [(ngModel)]="industryConfig.enableAppointments"> Enable Appointments</label>
+    </div>
+    <button class="btn btn-primary" (click)="save()" style="margin-top:16px">Save Changes</button>
+  </div>
+</div>
