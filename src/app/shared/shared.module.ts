@@ -26,6 +26,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { TopbarComponent } from './components/topbar/topbar.component';
 import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
+import { ProfileModule } from '../features/profile/profile.module';
 
 const MATERIAL_MODULES = [
   MatButtonModule,
@@ -61,6 +62,7 @@ const MATERIAL_MODULES = [
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
+    ProfileModule,
     ...MATERIAL_MODULES
   ],
   exports: [

@@ -25,12 +25,31 @@ export class AuthService {
     return !!token;
   }
 
+  /**
+   * Unified method to set authentication session
+   * Stores JWT token in localStorage and user details in sessionStorage
+   * Called by all login methods: email, Google, demo, SSO
+   */
+  public setAuthSession(token: string, user: User): void {
+    // Store JWT token for API Authorization header
+    localStorage.setItem('token', token);
+    
+    // Store user object for session context
+    sessionStorage.setItem('vms_user', JSON.stringify(user));
+    
+    // Update reactive BehaviorSubject for components
+    this.currentUserSubject.next(user);
+  }
+
   login(email: string, password: string): Observable<User | null> {
     return this.userService.getAllUsers().pipe(
       map(res => {
         const user = res.data.items.find(u => u.email === email);
         if (user) {
-          this.setSession(user);
+          // For demo purposes, use a mock token
+          // In production, backend would return actual JWT
+          const mockToken = 'demo-jwt-token-' + Date.now();
+          this.setAuthSession(mockToken, user);
           return user;
         }
         return null;
@@ -51,13 +70,23 @@ export class AuthService {
       organisationName: 'VMS Pro',
       createdAt: new Date().toISOString()
     };
-    this.setSession(demoUser);
+    // Use demo token for demo login
+    const demoToken = 'demo-jwt-token-' + Date.now();
+    this.setAuthSession(demoToken, demoUser);
     return of(demoUser);
   }
 
   logout(): void {
+    // Clear token
+    localStorage.removeItem('token');
+    
+    // Clear user session
     sessionStorage.removeItem('vms_user');
+    
+    // Clear reactive state
     this.currentUserSubject.next(null);
+    
+    // Navigate to login
     this.router.navigate(['/login']);
   }
 

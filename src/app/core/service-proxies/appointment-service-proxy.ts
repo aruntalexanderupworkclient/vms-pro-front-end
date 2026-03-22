@@ -31,7 +31,7 @@ export class AppointmentServiceProxy extends BaseApiService {
   }
 
   updateAppointment(id: number, appointment: Appointment): Observable<ApiResponse<Appointment>> {
-    return this.Put<ApiResponse<Appointment>>(EP, 'Update', { ...appointment, id });
+    return this.PutWithParams<ApiResponse<Appointment>>(EP, 'Update', appointment, { id });
   }
 
   deleteAppointment(id: number): Observable<ApiResponse<void>> {

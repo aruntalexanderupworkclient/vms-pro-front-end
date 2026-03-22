@@ -58,10 +58,9 @@
       <div class="form-group">
         <label>Organisation Type</label>
         <select [(ngModel)]="currentHost.orgType" name="orgType">
-          <option value="Hospital">Hospital</option>
-          <option value="Residential Tower">Residential Tower</option>
-          <option value="Corporate Office">Corporate Office</option>
-          <option value="Factory">Factory</option>
+          <option *ngFor="let type of organisationTypes" [value]="type.value">
+            {{ type.label }}
+          </option>
         </select>
       </div>
       <div class="form-group">

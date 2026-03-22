@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { HostServiceProxy } from '../../core/service-proxies';
+import { EnumOptionDto, EnumServiceProxy, HostServiceProxy } from '../../core/service-proxies';
 
 @Component({
   selector: 'app-hosts',
@@ -14,9 +14,12 @@ export class HostsComponent implements OnInit {
   editMode = false;
   currentHost: any = this.getEmpty();
 
-  constructor(private hostService: HostServiceProxy) {}
+  organisationTypes: EnumOptionDto[] = [];
+
+  constructor(private hostService: HostServiceProxy, private enumService: EnumServiceProxy) {}
 
   ngOnInit(): void {
+    this.loadOrganisationTypes();
     this.loadHosts();
   }
 
@@ -24,6 +27,12 @@ export class HostsComponent implements OnInit {
     this.hostService.getAllHosts().subscribe(res => {
       this.hosts = res.data.items;
       this.filteredHosts = res.data.items;
+    });
+  }
+
+  loadOrganisationTypes(): void {
+    this.enumService.getOrganisationTypes().subscribe(res => {
+      this.organisationTypes = res.data;
     });
   }
 

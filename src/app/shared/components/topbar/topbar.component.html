@@ -20,7 +20,7 @@
 
       <!-- Dropdown -->
       <div class="dropdown" *ngIf="showDropdown">
-        <a class="dropdown-item">
+        <a class="dropdown-item" (click)="openProfile()">
           <span class="material-icons">person</span>
           Profile
         </a>
@@ -32,3 +32,6 @@
     </div>
   </div>
 </header>
+
+<!-- Profile Component -->
+<app-profile [visible]="showProfile" (close)="closeProfile()"></app-profile>

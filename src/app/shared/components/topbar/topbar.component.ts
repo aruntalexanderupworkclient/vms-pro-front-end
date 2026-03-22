@@ -12,6 +12,7 @@ export class TopbarComponent {
 
   user: User | null = null;
   showDropdown = false;
+  showProfile = false;
 
   constructor(private authService: AuthService) {
     this.authService.currentUser$.subscribe((u: User | null) => this.user = u);
@@ -39,5 +40,14 @@ export class TopbarComponent {
 
   logout(): void {
     this.authService.logout();
+  }
+
+  openProfile(): void {
+    this.showProfile = true;
+    this.showDropdown = false;
+  }
+
+  closeProfile(): void {
+    this.showProfile = false;
   }
 }

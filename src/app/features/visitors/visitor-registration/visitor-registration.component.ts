@@ -42,7 +42,7 @@ export class VisitorRegistrationComponent implements OnInit {
 
   ngOnInit(): void {
     this.hostService.getAllHosts().subscribe(res => {
-      this.hosts = res.data.items.filter(h => h.status === 'active');
+      this.hosts = res.data.items.filter(h => h.status.toLowerCase() === 'active');
       this.filteredHosts = this.hosts;
     });
     this.visitor.orgType = sessionStorage.getItem('vms_org_type') || 'Corporate Office';
@@ -72,10 +72,10 @@ export class VisitorRegistrationComponent implements OnInit {
     this.visitor.checkIn = new Date().toISOString();
     this.visitorService.getAllVisitors().subscribe(res => {
       const newId = Math.max(...res.data.items.map(v => v.id), 0) + 1;
-      this.visitor.id = newId;
-      this.visitorService.createVisitor(this.visitor).subscribe(() => {
+      //this.visitor.id = newId;
+      this.visitorService.createVisitor(this.visitor).subscribe((result) => {
         this.router.navigate(['/tokens/generate'], {
-          queryParams: { visitorId: newId }
+          queryParams: { visitorId: result.data.id }
         });
       });
     });

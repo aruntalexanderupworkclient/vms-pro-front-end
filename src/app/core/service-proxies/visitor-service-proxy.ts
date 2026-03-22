@@ -26,7 +26,7 @@ export class VisitorServiceProxy extends BaseApiService {
         return this.Get<ApiResponse<PagedResult<Visitor>>>(EP, 'GetAll', inputParams);
     }
 
-    getVisitorById(id: number): Observable<ApiResponse<Visitor>> {
+    getVisitorById(id: string): Observable<ApiResponse<Visitor>> {
         return this.Get<ApiResponse<Visitor>>(EP, 'GetById', { id });
     }
 
@@ -35,7 +35,7 @@ export class VisitorServiceProxy extends BaseApiService {
     }
 
     updateVisitor(id: number, visitor: Visitor): Observable<ApiResponse<Visitor>> {
-        return this.Put<ApiResponse<Visitor>>(EP, 'Update', { ...visitor, id });
+        return this.PutWithParams<ApiResponse<Visitor>>(EP, 'Update', visitor, { id });
     }
 
     deleteVisitor(id: number): Observable<ApiResponse<void>> {

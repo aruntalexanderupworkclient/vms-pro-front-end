@@ -31,7 +31,7 @@ export class TokenServiceProxy extends BaseApiService {
   }
 
   updateToken(id: number, token: Token): Observable<ApiResponse<Token>> {
-    return this.Put<ApiResponse<Token>>(EP, 'Update', { ...token, id });
+    return this.PutWithParams<ApiResponse<Token>>(EP, 'Update', token, { id });
   }
 
   deleteToken(id: number): Observable<ApiResponse<void>> {

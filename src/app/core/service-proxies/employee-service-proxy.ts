@@ -31,7 +31,7 @@ export class EmployeeServiceProxy extends BaseApiService {
   }
 
   updateEmployee(id: number, employee: Employee): Observable<ApiResponse<Employee>> {
-    return this.Put<ApiResponse<Employee>>(EP, 'Update', { ...employee, id });
+    return this.PutWithParams<ApiResponse<Employee>>(EP, 'Update', employee, { id });
   }
 
   deleteEmployee(id: number): Observable<ApiResponse<void>> {

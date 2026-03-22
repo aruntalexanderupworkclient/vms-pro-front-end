@@ -19,7 +19,7 @@
 export { ApiEndpoints, EndpointPair } from '../config';
 
 // ── Models (re-exported for backward compatibility) ──────────────────
-export { ApiResponse, PagedResult, Visitor, Token, Employee, Host, Appointment, User, UserStatus, CreateUserDto, UpdateUserDto, Role, Permission, Organization } from '../models';
+export { ApiResponse, PagedResult, Visitor, Token, Employee, Host, Appointment, User, UserStatus, CreateUserDto, UpdateUserDto, Role, Permission, Organization, EnumOptionDto, EnumGroupDto, AllEnumsDto } from '../models';
 
 // ── Service Proxies ──────────────────────────────────────────────────
 export { BaseApiService } from './base-api.service';
@@ -32,3 +32,4 @@ export { UserServiceProxy } from './user-service-proxy';
 export { RoleServiceProxy } from './role-service-proxy';
 export { PermissionServiceProxy } from './permission-service-proxy';
 export { OrganizationServiceProxy } from './organization-service-proxy';
+export { EnumServiceProxy } from './enum-service-proxy';

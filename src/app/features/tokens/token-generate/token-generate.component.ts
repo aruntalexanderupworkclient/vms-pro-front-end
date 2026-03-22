@@ -32,7 +32,7 @@ export class TokenGenerateComponent implements OnInit {
   ngOnInit(): void {
     const visitorId = this.route.snapshot.queryParams['visitorId'];
     if (visitorId) {
-      this.visitorService.getVisitorById(+visitorId).subscribe(res => {
+      this.visitorService.getVisitorById(visitorId).subscribe(res => {
         this.visitor = res.data;
       });
     }

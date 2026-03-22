@@ -40,22 +40,28 @@ export class LoginComponent implements OnInit {
   handleCredentialResponse(response: any): void {
     const idToken = response.credential; // Google ID Token (JWT)
 
-    // Send to your backend for validation
-    this.http.post<{ token: string }>(`${environment.apiUrl}/auth/google-login`, {
-      idToken: idToken
-    }).subscribe({
+    // Send to backend for validation
+    // Backend should return both token and user details
+    this.http.post<{ token: string; user: User }>(
+      `${environment.apiUrl}/auth/google-login`,
+      { idToken }
+    ).subscribe({
       next: (res) => {
-        localStorage.setItem('token', res.token); // store your app's JWT
-        // this.ngZone.run(() => {
-        //   this.router.navigate(['/dashboard']);
-        // });
+        // Backend returns both JWT token and user details
+        // Use unified method to set both token and user session
+        this.authService.setAuthSession(res.token, res.user);
+
+        // Navigate to dashboard
         this.ngZone.run(() => {
-        this.router.navigate(['/dashboard']).then(success => {
-          console.log('Navigation success:', success); // check this
+          this.router.navigate(['/dashboard']).then(success => {
+            console.log('Navigation success:', success);
+          });
         });
-      });
       },
-      error: (err) => console.error('Login failed', err)
+      error: (err) => {
+        console.error('Google login failed', err);
+        this.error = 'Google login failed. Please try again.';
+      }
     });
   }
 

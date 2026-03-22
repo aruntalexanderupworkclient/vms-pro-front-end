@@ -31,7 +31,7 @@ export class HostServiceProxy extends BaseApiService {
   }
 
   updateHost(id: number, host: Host): Observable<ApiResponse<Host>> {
-    return this.Put<ApiResponse<Host>>(EP, 'Update', { ...host, id });
+    return this.PutWithParams<ApiResponse<Host>>(EP, 'Update',host, {id: id });
   }
 
   deleteHost(id: number): Observable<ApiResponse<void>> {

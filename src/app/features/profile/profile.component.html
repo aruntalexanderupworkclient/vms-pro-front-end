@@ -1,0 +1,64 @@
+<!-- Slide-over Panel -->
+<div class="overlay-backdrop" *ngIf="visible" (click)="closePanel()"></div>
+<div class="slide-over" *ngIf="visible">
+  <div class="panel-header">
+    <h2>My Profile</h2>
+    <button class="icon-btn" (click)="closePanel()">
+      <span class="material-icons">close</span>
+    </button>
+  </div>
+
+  <div class="panel-content" *ngIf="!isLoading && user">
+    <form (ngSubmit)="saveProfile()">
+      <div class="form-grid">
+        <!-- Full Name - Editable -->
+        <div class="form-group">
+          <label>Full Name <span class="editable-badge">Editable</span></label>
+          <input type="text" [(ngModel)]="user.fullName" name="fullName" required>
+        </div>
+
+        <!-- Email - Read-Only -->
+        <div class="form-group">
+          <label>Email <span class="readonly-badge">Read-Only</span></label>
+          <input type="email" [(ngModel)]="user.email" name="email" disabled>
+        </div>
+
+        <!-- Phone - Editable -->
+        <div class="form-group">
+          <label>Phone <span class="editable-badge">Editable</span></label>
+          <input type="tel" [(ngModel)]="user.phone" name="phone">
+        </div>
+
+        <!-- Role - Read-Only -->
+        <div class="form-group">
+          <label>Role <span class="readonly-badge">Read-Only</span></label>
+          <input type="text" [value]="user.roleName" disabled>
+        </div>
+
+        <!-- Status - Read-Only -->
+        <div class="form-group">
+          <label>Status <span class="readonly-badge">Read-Only</span></label>
+          <input type="text" [value]="user.status === 0 ? 'Active' : 'Inactive'" disabled>
+        </div>
+
+        <!-- Organization - Read-Only -->
+        <div class="form-group" *ngIf="user.organisationName">
+          <label>Organization <span class="readonly-badge">Read-Only</span></label>
+          <input type="text" [value]="user.organisationName" disabled>
+        </div>
+      </div>
+
+      <div class="panel-footer">
+        <button type="button" class="btn btn-secondary" (click)="cancel()">Cancel</button>
+        <button type="submit" class="btn btn-primary" [disabled]="isSaving">
+          {{ isSaving ? 'Saving...' : 'Save Changes' }}
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Loading State -->
+  <div class="panel-content loading-state" *ngIf="isLoading">
+    <p>Loading profile...</p>
+  </div>
+</div>
