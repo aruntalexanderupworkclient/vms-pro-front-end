@@ -19,7 +19,7 @@
 export { ApiEndpoints, EndpointPair } from '../config';
 
 // ── Models (re-exported for backward compatibility) ──────────────────
-export { ApiResponse, PagedResult, Visitor, Token, Employee, Host, Appointment, User, UserStatus, Role, Permission, Organization } from '../models';
+export { ApiResponse, PagedResult, Visitor, Token, Employee, Host, Appointment, User, UserStatus, CreateUserDto, UpdateUserDto, Role, Permission, Organization } from '../models';
 
 // ── Service Proxies ──────────────────────────────────────────────────
 export { BaseApiService } from './base-api.service';

@@ -8,7 +8,7 @@
       </div>
       <select [(ngModel)]="roleFilter" (ngModelChange)="applyFilters()">
         <option value="">All Roles</option>
-        <option *ngFor="let r of roles" [value]="r">{{ r }}</option>
+        <option *ngFor="let r of roles" [value]="r">{{ r.name }}</option>
       </select>
     </div>
     <button class="btn btn-primary" (click)="openAddUser()">
@@ -85,8 +85,8 @@
         </div>
         <div class="form-group">
           <label>Role</label>
-          <select [(ngModel)]="currentUser.roleName" name="roleName">
-            <option *ngFor="let r of roles" [value]="r">{{ r }}</option>
+          <select [(ngModel)]="currentUser.roleId" name="roleId">
+            <option *ngFor="let r of roles" [value]="r.id">{{ r.name }}</option>
           </select>
         </div>
         <div class="form-group">

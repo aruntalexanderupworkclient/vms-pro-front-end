@@ -10,6 +10,7 @@ export interface User {
     fullName: string;
     email: string;
     phone: string;
+    password?: string;
     roleId: string;
     roleName?: string;
     status: UserStatus;
@@ -17,4 +18,23 @@ export interface User {
     organisationName?: string;
     createdAt: string;
     updatedAt?: string;
+}
+
+
+export interface CreateUserDto {
+    FullName: string;
+    Email: string;
+    Phone: string;
+    Password: string;
+    RoleId: string;
+    OrganisationId: string | null;
+}
+
+export interface UpdateUserDto {
+    FullName: string;
+    Email: string;
+    Phone: string;
+    RoleId: string;
+    Status: UserStatus;
+    OrganisationId: string | null;
 }

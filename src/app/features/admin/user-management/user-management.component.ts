@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UserServiceProxy, User, UserStatus } from '../../../core/service-proxies';
+import { UserServiceProxy, RoleServiceProxy, User, UserStatus, Role, CreateUserDto, UpdateUserDto } from '../../../core/service-proxies';
 
 @Component({
   selector: 'app-user-management',
@@ -11,17 +11,25 @@ export class UserManagementComponent implements OnInit {
   filteredUsers: User[] = [];
   searchTerm = '';
   roleFilter = '';
-  roles: string[] = ['Super Admin', 'Manager', 'Receptionist', 'Security'];
+  // roles: string[] = ['Super Admin', 'Manager', 'Receptionist', 'Security'];
+  roles: Role[] = [];
 
   // Slide-over state
   showPanel = false;
   editMode = false;
   currentUser: User = this.getEmptyUser();
 
-  constructor(private userService: UserServiceProxy) {}
+  constructor(private userService: UserServiceProxy, private roleService: RoleServiceProxy) {}
 
   ngOnInit(): void {
+    this.loadRoles();
     this.loadUsers();
+  }
+
+  loadRoles(): void {
+    this.roleService.getAllRoles(1, 100).subscribe(res => {
+      this.roles = res.data.items;
+    });
   }
 
   loadUsers(): void {
@@ -59,12 +67,14 @@ export class UserManagementComponent implements OnInit {
 
   saveUser(): void {
     if (this.editMode) {
-      this.userService.updateUser(this.currentUser.id, this.currentUser).subscribe(() => {
+      const updateDto = this.mapToUpdateUserDto(this.currentUser);
+      this.userService.updateUser(this.currentUser.id, updateDto).subscribe(() => {
         this.loadUsers();
         this.closePanel();
       });
     } else {
-      this.userService.createUser(this.currentUser).subscribe(() => {
+      const createDto = this.mapToCreateUserDto(this.currentUser);
+      this.userService.createUser(createDto).subscribe(() => {
         this.loadUsers();
         this.closePanel();
       });
@@ -81,7 +91,8 @@ export class UserManagementComponent implements OnInit {
 
   toggleStatus(user: User): void {
     user.status = user.status === UserStatus.Active ? UserStatus.Inactive : UserStatus.Active;
-    this.userService.updateUser(user.id, user).subscribe();
+    const updateDto = this.mapToUpdateUserDto(user);
+    this.userService.updateUser(user.id, updateDto).subscribe();
   }
 
   getInitials(name: string): string {
@@ -91,13 +102,13 @@ export class UserManagementComponent implements OnInit {
   }
 
   getRoleBadgeClass(role: string | undefined): string {
-    switch (role) {
-      case 'Super Admin': return 'badge badge-blue';
-      case 'Manager': return 'badge badge-purple';
-      case 'Receptionist': return 'badge badge-green';
-      case 'Security': return 'badge badge-amber';
-      default: return 'badge';
-    }
+    if (!role) return 'badge';
+    const roleName = role.toLowerCase();
+    if (roleName.includes('admin')) return 'badge badge-blue';
+    if (roleName.includes('manager')) return 'badge badge-purple';
+    if (roleName.includes('receptionist')) return 'badge badge-green';
+    if (roleName.includes('security')) return 'badge badge-amber';
+    return 'badge';
   }
 
   private getEmptyUser(): User {
@@ -106,12 +117,35 @@ export class UserManagementComponent implements OnInit {
       fullName: '',
       email: '',
       phone: '',
+      password: 'Test@1234',
       roleId: '',
       roleName: 'Receptionist',
       status: UserStatus.Active,
       organisationId: undefined,
       organisationName: undefined,
       createdAt: new Date().toISOString()
+    };
+  }
+
+  private mapToCreateUserDto(user: User): CreateUserDto {
+    return {
+      FullName: user.fullName,
+      Email: user.email,
+      Phone: user.phone,
+      Password: user.password || '',
+      RoleId: user.roleId,
+      OrganisationId: user.organisationId || null
+    };
+  }
+
+  private mapToUpdateUserDto(user: User): UpdateUserDto {
+    return {
+      FullName: user.fullName,
+      Email: user.email,
+      Phone: user.phone,
+      RoleId: user.roleId,
+      Status: user.status,
+      OrganisationId: user.organisationId || null
     };
   }
 }

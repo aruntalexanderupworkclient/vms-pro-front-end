@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { BaseApiService } from './base-api.service';
-import { ApiResponse, PagedResult, User } from '../models';
+import { ApiResponse, PagedResult, User, CreateUserDto, UpdateUserDto } from '../models';
 import { ApiEndpoints } from '../config';
 
 const EP = ApiEndpoints.Users;
@@ -26,12 +26,12 @@ export class UserServiceProxy extends BaseApiService {
     return this.Get<ApiResponse<User>>(EP, 'GetById', { id });
   }
 
-  createUser(user: User): Observable<ApiResponse<User>> {
+  createUser(user: CreateUserDto): Observable<ApiResponse<User>> {
     return this.Post<ApiResponse<User>>(EP, 'Create', user);
   }
 
-  updateUser(id: string, user: User): Observable<ApiResponse<User>> {
-    return this.Put<ApiResponse<User>>(EP, 'Update', { ...user, id });
+  updateUser(id: string, user: UpdateUserDto): Observable<ApiResponse<User>> {
+    return this.PutWithParams<ApiResponse<User>>(EP, 'Update', user,{id: id});
   }
 
   deleteUser(id: string): Observable<ApiResponse<void>> {

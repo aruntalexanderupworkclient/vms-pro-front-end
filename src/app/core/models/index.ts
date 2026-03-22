@@ -14,7 +14,7 @@ export { Token } from './token.model';
 export { Employee } from './employee.model';
 export { Host } from './host.model';
 export { Appointment } from './appointment.model';
-export { User, UserStatus } from './user.model';
+export { User, UserStatus, CreateUserDto, UpdateUserDto } from './user.model';
 export { Role } from './role.model';
 export { Permission } from './permission.model';
 export { Organization } from './organization.model';

@@ -34,12 +34,31 @@ import { EndpointPair } from '../config/api-endpoints.const';
  *  GetBlob            — GET    Blob (file download)
  *  Post<T>            — POST   JSON body
  *  PostForm<T>        — POST   FormData body (file upload)
- *  Put<T>             — PUT    JSON body
- *  PutWithParams<T>   — PUT    JSON body + query params
- *  Patch<T>           — PATCH  JSON body
- *  PatchWithParams<T> — PATCH  JSON body + query params
+ *  Put<T>             — PUT    JSON body only ([FromBody])
+ *  PutWithParams<T>   — PUT    JSON body + query params ([FromQuery] & [FromBody])
+ *  Patch<T>           — PATCH  JSON body only ([FromBody])
+ *  PatchWithParams<T> — PATCH  JSON body + query params ([FromQuery] & [FromBody])
  *  Delete<T>          — DELETE with optional query params
  *  DeleteWithBody<T>  — DELETE with JSON body + optional query params
+ *
+ * ── Query parameter handling ──────────────────────────────────────────
+ * For APIs that use [FromQuery] and/or [FromBody] in the action signature:
+ *
+ *  • Only [FromBody]:
+ *    userServiceProxy.Put(ep, 'Update', {id: 1, name: 'John'})
+ *
+ *  • Only [FromQuery]:
+ *    userServiceProxy.PutWithParams(ep, 'Update', {}, {id: '123', status: 'active'})
+ *
+ *  • Both [FromQuery] & [FromBody]:
+ *    [HttpPut("Update")] Update([FromQuery] Guid id, [FromBody] UpdateUserDto dto)
+ *    userServiceProxy.PutWithParams(ep, 'Update', {name: 'John'}, {id: '123'})
+ *
+ * ── In-memory Mode Query Params ───────────────────────────────────────
+ * When using PutWithParams/PatchWithParams with query params:
+ *  • If 'id' is ONLY in query params: PUT /api/{collection}?id=123&other=value
+ *  • If 'id' is in body: PUT /api/{collection}/123 (uses path)
+ *  • Other query params are appended to URL query string
  *
  * ── inputParams ──────────────────────────────────────────────────────
  * Always a plain Record<string, any>.
@@ -74,6 +93,23 @@ export abstract class BaseApiService {
     let url = `/api/${ep.inMemory}`;
     if (id !== undefined && id !== null) {
       url += `/${id}`;
+    }
+    return url;
+  }
+
+  /**
+   * In-memory URL with query params:  /api/{collection}?param1=value1&param2=value2
+   * Appends query parameters to the in-memory URL for [FromQuery] scenarios.
+   */
+  private buildInMemoryUrlWithParams(
+    ep: EndpointPair,
+    inputParams?: Record<string, any>
+  ): string {
+    let url = `/api/${ep.inMemory}`;
+    const httpParams = this.toHttpParams(inputParams);
+    const queryString = httpParams.toString();
+    if (queryString) {
+      url += `?${queryString}`;
     }
     return url;
   }
@@ -269,6 +305,9 @@ export abstract class BaseApiService {
   /**
    * PUT — JSON body
    *
+   * Use this method when the API expects [FromBody] only.
+   * If the API needs [FromQuery] parameters, use PutWithParams() instead.
+   *
    * Real API  →  PUT {apiUrl}/{ep.api}/{action}
    * In-memory →  PUT /api/{ep.inMemory}/{body.id}
    */
@@ -277,6 +316,7 @@ export abstract class BaseApiService {
     action: string,
     body: any
   ): Observable<T> {
+    console.log('PUT body:', body); // Debug log for PUT request body
     if (this.isInMemory) {
       const url = this.buildInMemoryUrl(ep, body?.id);
       return this.wrapSingle(this.http.put<any>(url, body)) as unknown as Observable<T>;
@@ -286,6 +326,15 @@ export abstract class BaseApiService {
 
   /**
    * PUT — JSON body + query params
+   *
+   * Handles [FromQuery] & [FromBody] scenarios:
+   *  • ID in query param: call PutWithParams(ep, action, body, {id: '123'})
+   *  • ID in body:       call PutWithParams(ep, action, {id: '123', ...data})
+   *  • Only [FromBody]:  call Put(ep, action, body)
+   *
+   * Real API  →  PUT {apiUrl}/{ep.api}/{action}?params with body
+   * In-memory →  PUT /api/{ep.inMemory}/{id}?otherParams  or  PUT /api/{ep.inMemory}?params (if id in query)
+   *              Uses query param 'id' if present, otherwise falls back to body.id
    */
   protected PutWithParams<T>(
     ep: EndpointPair,
@@ -294,9 +343,22 @@ export abstract class BaseApiService {
     inputParams?: Record<string, any>
   ): Observable<T> {
     if (this.isInMemory) {
-      const url = this.buildInMemoryUrl(ep, body?.id);
+      // Check if 'id' is in query params first (for [FromQuery] scenarios)
+      const idFromParams = inputParams?.['id'];
+      const idFromBody = body?.id;
+      const id = idFromParams ?? idFromBody;
+
+      // If id is in query params but not in body, use query string URL
+      if (idFromParams && !idFromBody) {
+        const url = this.buildInMemoryUrlWithParams(ep, inputParams);
+        return this.wrapSingle(this.http.put<any>(url, body)) as unknown as Observable<T>;
+      }
+
+      // If id is in body or params, use path-based URL (traditional style)
+      const url = this.buildInMemoryUrl(ep, id);
       return this.wrapSingle(this.http.put<any>(url, body)) as unknown as Observable<T>;
     }
+
     return this.http.put<T>(this.buildApiUrl(ep, action), body, {
       params: this.toHttpParams(inputParams)
     });
@@ -309,6 +371,7 @@ export abstract class BaseApiService {
   /**
    * PATCH — JSON body
    * In-memory: treated as PUT (angular-in-memory-web-api doesn't differentiate).
+   * Use this for [FromBody] only scenarios.
    */
   protected Patch<T>(
     ep: EndpointPair,
@@ -324,6 +387,13 @@ export abstract class BaseApiService {
 
   /**
    * PATCH — JSON body + query params
+   *
+   * Handles [FromQuery] & [FromBody] scenarios (same as PutWithParams):
+   *  • ID in query param: call PatchWithParams(ep, action, body, {id: '123'})
+   *  • ID in body:       call PatchWithParams(ep, action, {id: '123', ...data})
+   *
+   * Real API  →  PATCH {apiUrl}/{ep.api}/{action}?params with body
+   * In-memory →  PUT /api/{ep.inMemory}/{id}?otherParams  or  PUT /api/{ep.inMemory}?params (if id in query)
    */
   protected PatchWithParams<T>(
     ep: EndpointPair,
@@ -332,9 +402,22 @@ export abstract class BaseApiService {
     inputParams?: Record<string, any>
   ): Observable<T> {
     if (this.isInMemory) {
-      const url = this.buildInMemoryUrl(ep, body?.id);
+      // Check if 'id' is in query params first (for [FromQuery] scenarios)
+      const idFromParams = inputParams?.['id'];
+      const idFromBody = body?.id;
+      const id = idFromParams ?? idFromBody;
+
+      // If id is in query params but not in body, use query string URL
+      if (idFromParams && !idFromBody) {
+        const url = this.buildInMemoryUrlWithParams(ep, inputParams);
+        return this.wrapSingle(this.http.put<any>(url, body)) as unknown as Observable<T>;
+      }
+
+      // If id is in body or params, use path-based URL (traditional style)
+      const url = this.buildInMemoryUrl(ep, id);
       return this.wrapSingle(this.http.put<any>(url, body)) as unknown as Observable<T>;
     }
+
     return this.http.patch<T>(this.buildApiUrl(ep, action), body, {
       params: this.toHttpParams(inputParams)
     });

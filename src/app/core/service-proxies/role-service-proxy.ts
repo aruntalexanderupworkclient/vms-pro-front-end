@@ -31,7 +31,7 @@ export class RoleServiceProxy extends BaseApiService {
   }
 
   updateRole(id: number, role: Role): Observable<ApiResponse<Role>> {
-    return this.Put<ApiResponse<Role>>(EP, 'Update', { ...role, id });
+    return this.PutWithParams<ApiResponse<Role>>(EP, 'Update', role , { id: id });
   }
 
   deleteRole(id: number): Observable<ApiResponse<void>> {

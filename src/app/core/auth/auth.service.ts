@@ -58,7 +58,7 @@ export class AuthService {
   logout(): void {
     sessionStorage.removeItem('vms_user');
     this.currentUserSubject.next(null);
-    this.router.navigate(['/select-org']);
+    this.router.navigate(['/login']);
   }
 
   getInitials(fullName: string): string {
