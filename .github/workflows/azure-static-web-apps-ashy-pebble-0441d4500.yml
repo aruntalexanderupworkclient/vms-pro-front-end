@@ -20,10 +20,10 @@ jobs:
         with:
           submodules: true
           lfs: false
-      - name: Set up Node.js 18
+      - name: Set up Node.js 14
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: '14'
       - name: Install OIDC Client from Core Package
         run: npm install @actions/core@1.6.0 @actions/http-client
       - name: Get Id Token
@@ -44,6 +44,9 @@ jobs:
           api_location: ""
           output_location: "dist/vms-pro"
           github_id_token: ${{ steps.idtoken.outputs.result }}
+        env:
+          NODE_VERSION: 14
+          NODE_OPTIONS: --openssl-legacy-provider
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
     runs-on: ubuntu-latest
