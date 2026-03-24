@@ -1,7 +1,7 @@
 export const environment = {
   production: true,
   useInMemoryApi: false,
-  apiUrl: 'https://vms-api-efbacghgbvhhdsdb.southindia-01.azurewebsites.net',
+  apiUrl: 'https://vms-api-efbacghgbvhhdsdb.southindia-01.azurewebsites.net/api',
   
   // Google Sign-In
   googleClientId: '169656025674-akam3hj6lsf9skmbhdkv3l63ugderojt.apps.googleusercontent.com',
