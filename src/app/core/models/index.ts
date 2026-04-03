@@ -19,3 +19,4 @@ export { Role } from './role.model';
 export { Permission } from './permission.model';
 export { Organization } from './organization.model';
 export { EnumOptionDto, EnumGroupDto, AllEnumsDto } from './enum.model';
+export { MdmType, MdmDto, CreateMdmDto, UpdateMdmDto } from './mdm.model';

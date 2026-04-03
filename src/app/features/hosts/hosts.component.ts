@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { EnumOptionDto, EnumServiceProxy, HostServiceProxy } from '../../core/service-proxies';
+import { MdmDto, MdmType, MdmServiceProxy, HostServiceProxy } from '../../core/service-proxies';
+import { Host } from '../../core/models';
 
 @Component({
   selector: 'app-hosts',
@@ -7,16 +8,16 @@ import { EnumOptionDto, EnumServiceProxy, HostServiceProxy } from '../../core/se
   styleUrls: ['./hosts.component.scss']
 })
 export class HostsComponent implements OnInit {
-  hosts: any[] = [];
-  filteredHosts: any[] = [];
+  hosts: Host[] = [];
+  filteredHosts: Host[] = [];
   searchTerm = '';
   showPanel = false;
   editMode = false;
-  currentHost: any = this.getEmpty();
+  currentHost: Host = this.getEmpty();
 
-  organisationTypes: EnumOptionDto[] = [];
+  organisationTypes: MdmDto[] = [];
 
-  constructor(private hostService: HostServiceProxy, private enumService: EnumServiceProxy) {}
+  constructor(private hostService: HostServiceProxy, private mdmService: MdmServiceProxy) {}
 
   ngOnInit(): void {
     this.loadOrganisationTypes();
@@ -25,13 +26,13 @@ export class HostsComponent implements OnInit {
 
   loadHosts(): void {
     this.hostService.getAllHosts().subscribe(res => {
-      this.hosts = res.data.items;
-      this.filteredHosts = res.data.items;
+      this.hosts = res.data.items as Host[];
+      this.filteredHosts = res.data.items as Host[];
     });
   }
 
   loadOrganisationTypes(): void {
-    this.enumService.getOrganisationTypes().subscribe(res => {
+    this.mdmService.getAll(MdmType.OrganisationType).subscribe(res => {
       this.organisationTypes = res.data;
     });
   }
@@ -43,26 +44,26 @@ export class HostsComponent implements OnInit {
   }
 
   openAdd(): void { this.currentHost = this.getEmpty(); this.editMode = false; this.showPanel = true; }
-  openEdit(host: any): void { this.currentHost = { ...host }; this.editMode = true; this.showPanel = true; }
+  openEdit(host: Host): void { this.currentHost = { ...host }; this.editMode = true; this.showPanel = true; }
   closePanel(): void { this.showPanel = false; }
 
   save(): void {
+    const { name, unit, contact, orgType, status } = this.currentHost;
+    const dto = { name, unit, contact, orgType, status };
     if (this.editMode) {
-      this.hostService.updateHost(this.currentHost.id, this.currentHost).subscribe(() => { this.loadHosts(); this.closePanel(); });
+      this.hostService.updateHost(this.currentHost.id, dto).subscribe(() => { this.loadHosts(); this.closePanel(); });
     } else {
-      const newId = Math.max(...this.hosts.map(h => h.id), 0) + 1;
-      this.currentHost.id = newId;
-      this.hostService.createHost(this.currentHost).subscribe(() => { this.loadHosts(); this.closePanel(); });
+      this.hostService.createHost(dto).subscribe(() => { this.loadHosts(); this.closePanel(); });
     }
   }
 
-  deleteHost(host: any): void {
+  deleteHost(host: Host): void {
     if (confirm(`Delete host "${host.name}"?`)) {
       this.hostService.deleteHost(host.id).subscribe(() => this.loadHosts());
     }
   }
 
-  private getEmpty(): any {
-    return { id: 0, name: '', unit: '', contact: '', orgType: 'Corporate Office', status: 'active' };
+  private getEmpty(): Host {
+    return { id: 0, name: '', unit: '', contact: '', orgType: 'Corporate Office', status: true };
   }
 }

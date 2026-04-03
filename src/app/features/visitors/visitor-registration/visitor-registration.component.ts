@@ -42,7 +42,7 @@ export class VisitorRegistrationComponent implements OnInit {
 
   ngOnInit(): void {
     this.hostService.getAllHosts().subscribe(res => {
-      this.hosts = res.data.items.filter(h => h.status.toLowerCase() === 'active');
+      this.hosts = res.data.items.filter(h => h.status);
       this.filteredHosts = this.hosts;
     });
     this.visitor.orgType = sessionStorage.getItem('vms_org_type') || 'Corporate Office';

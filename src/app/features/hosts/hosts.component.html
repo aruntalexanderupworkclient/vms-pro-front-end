@@ -29,8 +29,8 @@
           <td>{{ host.contact }}</td>
           <td><span class="badge badge-blue">{{ host.orgType }}</span></td>
           <td>
-            <span [class]="host.status === 'active' ? 'badge badge-green' : 'badge badge-red'">
-              {{ host.status }}
+            <span [class]="host.status ? 'badge badge-green' : 'badge badge-red'">
+              {{ host.status ? 'Active' : 'Inactive' }}
             </span>
           </td>
           <td>
@@ -58,16 +58,16 @@
       <div class="form-group">
         <label>Organisation Type</label>
         <select [(ngModel)]="currentHost.orgType" name="orgType">
-          <option *ngFor="let type of organisationTypes" [value]="type.value">
-            {{ type.label }}
+          <option *ngFor="let type of organisationTypes" [value]="type.code">
+            {{ type.value }}
           </option>
         </select>
       </div>
       <div class="form-group">
         <label>Status</label>
         <select [(ngModel)]="currentHost.status" name="status">
-          <option value="active">Active</option>
-          <option value="inactive">Inactive</option>
+          <option [ngValue]="true">Active</option>
+          <option [ngValue]="false">Inactive</option>
         </select>
       </div>
       <div class="panel-footer">

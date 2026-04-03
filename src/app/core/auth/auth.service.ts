@@ -65,7 +65,7 @@ export class AuthService {
       phone: '+1234567890',
       roleId: '00000000-0000-0000-0000-000000000001',
       roleName: 'Super Admin',
-      status: UserStatus.Active,
+      // status: UserStatus.Active,
       organisationId: '00000000-0000-0000-0000-000000000001',
       organisationName: 'VMS Pro',
       createdAt: new Date().toISOString()

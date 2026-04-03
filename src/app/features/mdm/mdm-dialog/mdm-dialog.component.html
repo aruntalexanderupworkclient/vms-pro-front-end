@@ -1,0 +1,46 @@
+<div class="mdm-dialog">
+  <div class="dialog-header">
+    <h2>{{ dialogTitle }}</h2>
+    <button class="icon-btn" (click)="onCancel()">
+      <span class="material-icons">close</span>
+    </button>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="dialog-body">
+      <!-- Code -->
+      <div class="form-field">
+        <label class="field-label">Code <span class="required">*</span></label>
+        <input type="text" formControlName="code" placeholder="Enter code (e.g., ACTIVE)" class="field-input">
+        <div class="field-error" *ngIf="form.get('code')?.touched && form.get('code')?.hasError('required')">
+          Code is required
+        </div>
+      </div>
+
+      <!-- Value -->
+      <div class="form-field">
+        <label class="field-label">Value <span class="required">*</span></label>
+        <input type="text" formControlName="value" placeholder="Enter value (e.g., Active)" class="field-input">
+        <div class="field-error" *ngIf="form.get('value')?.touched && form.get('value')?.hasError('required')">
+          Value is required
+        </div>
+      </div>
+
+      <!-- Status Toggle -->
+      <div class="form-field toggle-field">
+        <div class="toggle-info">
+          <label class="field-label">Status</label>
+          <span class="toggle-status">{{ form.get('isActive')?.value ? 'Active' : 'Inactive' }}</span>
+        </div>
+        <mat-slide-toggle formControlName="isActive" color="primary"></mat-slide-toggle>
+      </div>
+    </div>
+
+    <div class="dialog-footer">
+      <button type="button" class="btn btn-secondary" (click)="onCancel()">Cancel</button>
+      <button type="submit" class="btn btn-primary" [disabled]="form.invalid || saving">
+        {{ saving ? 'Saving...' : submitLabel }}
+      </button>
+    </div>
+  </form>
+</div>

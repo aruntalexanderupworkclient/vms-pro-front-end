@@ -9,6 +9,8 @@ interface MenuItem {
   route: string;
   section?: boolean;
   divider?: boolean;
+  children?: MenuItem[];
+  expanded?: boolean;
 }
 
 @Component({
@@ -29,6 +31,15 @@ export class SidebarComponent implements OnInit {
     { label: 'Appointments', icon: 'event', route: '/appointments' },
     { label: 'Employees', icon: 'work', route: '/employees' },
     { label: 'Hosts', icon: 'business', route: '/hosts' },
+    {
+      label: 'MDM Data', icon: 'dataset', route: '', expanded: false,
+      children: [
+        { label: 'Visit Status', icon: '', route: '/mdm/VisitStatus' },
+        { label: 'User Status', icon: '', route: '/mdm/UserStatus' },
+        { label: 'Token Type', icon: '', route: '/mdm/TokenType' },
+        { label: 'Organisation Type', icon: '', route: '/mdm/OrganisationType' }
+      ]
+    },
     { label: 'Admin', icon: '', route: '', section: true },
     { label: 'User Management', icon: 'manage_accounts', route: '/admin/users' },
     { label: 'Role Management', icon: 'shield', route: '/admin/roles' },
@@ -57,6 +68,15 @@ export class SidebarComponent implements OnInit {
   isActive(route: string): boolean {
     if (!route) return false;
     return this.currentRoute.startsWith(route);
+  }
+
+  isParentActive(item: MenuItem): boolean {
+    if (!item.children) return false;
+    return item.children.some(child => this.currentRoute.startsWith(child.route));
+  }
+
+  toggleExpand(item: MenuItem): void {
+    item.expanded = !item.expanded;
   }
 
   navigate(route: string): void {

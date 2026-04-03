@@ -30,6 +30,7 @@ const routes: Routes = [
       { path: 'admin', loadChildren: () => import('./features/admin/admin.module').then(m => m.AdminModule) },
       { path: 'reports', loadChildren: () => import('./features/reports/reports.module').then(m => m.ReportsModule) },
       { path: 'settings', loadChildren: () => import('./features/settings/settings.module').then(m => m.SettingsModule) },
+      { path: 'mdm', loadChildren: () => import('./features/mdm/mdm.module').then(m => m.MdmModule) },
       { path: '403', component: AccessDeniedComponent },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]

@@ -90,7 +90,7 @@ export class ProfileComponent implements OnInit {
       Email: user.email,
       Phone: user.phone,
       RoleId: user.roleId,
-      Status: user.status,
+      StatusId: user.statusId,
       OrganisationId: user.organisationId || null
     };
   }

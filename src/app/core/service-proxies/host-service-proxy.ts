@@ -26,11 +26,11 @@ export class HostServiceProxy extends BaseApiService {
     return this.Get<ApiResponse<Host>>(EP, 'GetById', { id });
   }
 
-  createHost(host: Host): Observable<ApiResponse<Host>> {
+  createHost(host: Partial<Host>): Observable<ApiResponse<Host>> {
     return this.Post<ApiResponse<Host>>(EP, 'Create', host);
   }
 
-  updateHost(id: number, host: Host): Observable<ApiResponse<Host>> {
+  updateHost(id: number, host: Partial<Host>): Observable<ApiResponse<Host>> {
     return this.PutWithParams<ApiResponse<Host>>(EP, 'Update',host, {id: id });
   }
 

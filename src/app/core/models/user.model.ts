@@ -13,7 +13,8 @@ export interface User {
     password?: string;
     roleId: string;
     roleName?: string;
-    status: UserStatus;
+    statusId?: string;
+    status?: string;
     organisationId?: string;
     organisationName?: string;
     createdAt: string;
@@ -27,6 +28,7 @@ export interface CreateUserDto {
     Phone: string;
     Password: string;
     RoleId: string;
+    StatusId?:string;
     OrganisationId: string | null;
 }
 
@@ -35,6 +37,6 @@ export interface UpdateUserDto {
     Email: string;
     Phone: string;
     RoleId: string;
-    Status: UserStatus;
+    StatusId?: string;
     OrganisationId: string | null;
 }

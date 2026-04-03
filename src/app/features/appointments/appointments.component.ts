@@ -32,7 +32,7 @@ export class AppointmentsComponent implements OnInit {
       this.appointments = res.data.items;
     });
     this.hostService.getAllHosts().subscribe(res => {
-      this.hosts = res.data.items.filter(h => h.status.toLowerCase() === 'active');
+      this.hosts = res.data.items.filter(h => h.status);
       console.log('Loaded hosts:', this.hosts);
     });
   }

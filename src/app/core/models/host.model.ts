@@ -4,5 +4,5 @@ export interface Host {
     unit: string;
     contact: string;
     orgType: string;
-    status: string;
+    status: boolean;
 }

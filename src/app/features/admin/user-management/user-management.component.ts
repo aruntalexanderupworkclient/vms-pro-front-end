@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UserServiceProxy, RoleServiceProxy, User, UserStatus, Role, CreateUserDto, UpdateUserDto } from '../../../core/service-proxies';
+import { UserServiceProxy, RoleServiceProxy, User, UserStatus, Role, CreateUserDto, UpdateUserDto, MdmServiceProxy, MdmType, MdmDto } from '../../../core/service-proxies';
 
 @Component({
   selector: 'app-user-management',
@@ -19,10 +19,13 @@ export class UserManagementComponent implements OnInit {
   editMode = false;
   currentUser: User = this.getEmptyUser();
 
-  constructor(private userService: UserServiceProxy, private roleService: RoleServiceProxy) {}
+  userStatuses: MdmDto[] = [];
+
+  constructor(private userService: UserServiceProxy, private roleService: RoleServiceProxy, private mdmService: MdmServiceProxy) { }
 
   ngOnInit(): void {
     this.loadRoles();
+    this.loadUserStatus();
     this.loadUsers();
   }
 
@@ -36,7 +39,13 @@ export class UserManagementComponent implements OnInit {
     this.userService.getAllUsers().subscribe(res => {
       this.users = res.data.items;
       this.applyFilters();
-    }); 
+    });
+  }
+
+  loadUserStatus(): void {
+    this.mdmService.getAll(MdmType.UserStatus).subscribe(res => {
+      this.userStatuses = res.data;
+    });
   }
 
   applyFilters(): void {
@@ -89,11 +98,6 @@ export class UserManagementComponent implements OnInit {
     }
   }
 
-  toggleStatus(user: User): void {
-    user.status = user.status === UserStatus.Active ? UserStatus.Inactive : UserStatus.Active;
-    const updateDto = this.mapToUpdateUserDto(user);
-    this.userService.updateUser(user.id, updateDto).subscribe();
-  }
 
   getInitials(name: string): string {
     if (!name) return '?';
@@ -113,14 +117,14 @@ export class UserManagementComponent implements OnInit {
 
   private getEmptyUser(): User {
     return {
-      id: '',
+      id: null as any,
       fullName: '',
       email: '',
       phone: '',
       password: 'Test@1234',
       roleId: '',
       roleName: 'Receptionist',
-      status: UserStatus.Active,
+      statusId: undefined,
       organisationId: undefined,
       organisationName: undefined,
       createdAt: new Date().toISOString()
@@ -134,6 +138,7 @@ export class UserManagementComponent implements OnInit {
       Phone: user.phone,
       Password: user.password || '',
       RoleId: user.roleId,
+      StatusId: user.statusId,
       OrganisationId: user.organisationId || null
     };
   }
@@ -144,7 +149,7 @@ export class UserManagementComponent implements OnInit {
       Email: user.email,
       Phone: user.phone,
       RoleId: user.roleId,
-      Status: user.status,
+      StatusId: user.statusId,
       OrganisationId: user.organisationId || null
     };
   }
