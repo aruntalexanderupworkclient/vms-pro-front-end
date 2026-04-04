@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { BaseApiService } from './base-api.service';
 import { ApiResponse, PagedResult, Token } from '../models';
 import { ApiEndpoints } from '../config';
+import { ScanTokenDto } from '../models/token.model';
 
 const EP = ApiEndpoints.Tokens;
 
@@ -22,8 +23,12 @@ export class TokenServiceProxy extends BaseApiService {
     return this.Get<ApiResponse<PagedResult<Token>>>(EP, 'GetAll', inputParams);
   }
 
-  getTokenById(id: number): Observable<ApiResponse<Token>> {
+  getTokenById(id: string): Observable<ApiResponse<Token>> {
     return this.Get<ApiResponse<Token>>(EP, 'GetById', { id });
+  }
+
+  scan(id: string): Observable<ApiResponse<ScanTokenDto>> {
+    return this.Get<ApiResponse<ScanTokenDto>>(EP, 'Scan', { id });
   }
 
   createToken(token: Token): Observable<ApiResponse<Token>> {

@@ -1,0 +1,66 @@
+<div class="visitor-pass-wrapper">
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-state">
+    <mat-icon>hourglass_empty</mat-icon>
+    <p>Loading visitor pass...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="!loading && error" class="error-state">
+    <mat-icon color="warn">error_outline</mat-icon>
+    <p>{{ error }}</p>
+  </div>
+
+  <!-- Visitor Pass Card -->
+  <div *ngIf="!loading && !error && token" class="visitor-pass" id="visitor-pass-print">
+    <div class="pass-header">
+      <mat-icon class="pass-icon">badge</mat-icon>
+      <h2>Visitor Pass</h2>
+    </div>
+
+    <div class="pass-body">
+      <div class="pass-detail">
+        <span class="label">Visitor Name</span>
+        <span class="value">{{ token.visitorName }}</span>
+      </div>
+
+      <div class="pass-detail">
+        <span class="label">Token Number</span>
+        <span class="value token-number">{{ token.tokenNo }}</span>
+      </div>
+
+      <div class="pass-detail">
+        <span class="label">Host</span>
+        <span class="value">{{ token.hostName }}</span>
+      </div>
+
+      <div class="pass-detail">
+        <span class="label">Issued</span>
+        <span class="value">{{ token.issueTime | date:'medium' }}</span>
+      </div>
+
+      <div class="pass-detail">
+        <span class="label">Expires</span>
+        <span class="value expiry">{{ token.expiry | date:'medium' }}</span>
+      </div>
+
+      <div class="qr-section">
+        <qrcode
+          [qrdata]="qrData"
+          [width]="200"
+          [errorCorrectionLevel]="'M'"
+          [elementType]="'canvas'"
+        ></qrcode>
+      </div>
+    </div>
+
+    <div class="pass-footer no-print">
+      <button mat-raised-button color="primary" (click)="print()">
+        <mat-icon>print</mat-icon>
+        Print Pass
+      </button>
+    </div>
+  </div>
+
+</div>

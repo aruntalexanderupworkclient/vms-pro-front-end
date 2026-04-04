@@ -23,9 +23,13 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatRadioModule } from '@angular/material/radio';
 
+import { QRCodeModule } from 'angularx-qrcode';
+
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { TopbarComponent } from './components/topbar/topbar.component';
 import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
+import { VisitorPassComponent } from './components/visitor-pass/visitor-pass.component';
+import { VisitorPassDialogComponent } from './components/visitor-pass/visitor-pass-dialog.component';
 import { ProfileModule } from '../features/profile/profile.module';
 
 const MATERIAL_MODULES = [
@@ -55,7 +59,9 @@ const MATERIAL_MODULES = [
   declarations: [
     SidebarComponent,
     TopbarComponent,
-    BreadcrumbComponent
+    BreadcrumbComponent,
+    VisitorPassComponent,
+    VisitorPassDialogComponent
   ],
   imports: [
     CommonModule,
@@ -63,6 +69,7 @@ const MATERIAL_MODULES = [
     FormsModule,
     ReactiveFormsModule,
     ProfileModule,
+    QRCodeModule,
     ...MATERIAL_MODULES
   ],
   exports: [
@@ -71,9 +78,12 @@ const MATERIAL_MODULES = [
     FormsModule,
     ReactiveFormsModule,
     ...MATERIAL_MODULES,
+    QRCodeModule,
     SidebarComponent,
     TopbarComponent,
-    BreadcrumbComponent
+    BreadcrumbComponent,
+    VisitorPassComponent,
+    VisitorPassDialogComponent
   ]
 })
 export class SharedModule {}

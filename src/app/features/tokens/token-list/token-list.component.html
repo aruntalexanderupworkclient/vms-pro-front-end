@@ -23,6 +23,7 @@
           <th>Expiry</th>
           <th>Status</th>
           <th>Actions</th>
+          <th>View Qr Code</th>
         </tr>
       </thead>
       <tbody>
@@ -39,8 +40,15 @@
               View
             </button>
           </td>
+          <td>
+            <button class="btn btn-sm btn-secondary" (click)="generateTokenQR(t)" >
+              <span class="material-icons" style="font-size:16px">visibility</span>
+              Get QR
+            </button>
+          </td>
         </tr>
       </tbody>
     </table>
   </div>
 </div>
+

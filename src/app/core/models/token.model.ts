@@ -1,12 +1,14 @@
 export interface Token {
-    id: number;
+    id: string;
     tokenNo: string;
-    visitorId: number;
+    visitorId: string;
     visitorName: string;
     type: string;
-    issueTime: string;
-    expiry: string;
+    typeId: string;
+    issueTime: Date;
+    expiry: Date;
     status: string;
+    statusId: string;
     hostName: string;
 }
 
@@ -18,6 +20,12 @@ export interface TokenType {
     description: string;
 }
 
+export interface ScanTokenDto {
+    Name: string;
+    Token: string;
+    Status: string;
+}
+
 export class TokenType {
     constructor(init?: Partial<TokenType>) {
         Object.assign(this, init);
@@ -26,6 +34,12 @@ export class TokenType {
 
 export class Token {
     constructor(init?: Partial<Token>) {
+        Object.assign(this, init);
+    }
+}
+
+export class ScanTokenDto {
+    constructor(init?: Partial<ScanTokenDto>) {
         Object.assign(this, init);
     }
 }

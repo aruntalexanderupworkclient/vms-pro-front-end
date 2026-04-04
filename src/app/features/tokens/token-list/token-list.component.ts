@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { TokenServiceProxy } from '../../../core/service-proxies';
+import { VisitorPassDialogComponent } from '../../../shared/components/visitor-pass/visitor-pass-dialog.component';
 
 @Component({
   selector: 'app-token-list',
@@ -13,7 +15,10 @@ export class TokenListComponent implements OnInit {
   typeFilter = '';
   tokenTypes = ['General', 'Guest', 'Delivery', 'Maintenance', 'Doctor Visit'];
 
-  constructor(private tokenService: TokenServiceProxy) {}
+  constructor(
+    private tokenService: TokenServiceProxy,
+    private dialog: MatDialog
+  ) {}
 
   ngOnInit(): void {
     this.loadTokens();
@@ -54,5 +59,16 @@ export class TokenListComponent implements OnInit {
       case 'revoked': return 'badge badge-amber';
       default: return 'badge';
     }
+  }
+
+  generateTokenQR(token: any): void {
+    console.log('Generating QR for token:', token);
+    this.dialog.open(VisitorPassDialogComponent, {
+      width: '440px',
+      data: {
+        tokenId: token.id,
+        visitorId: token.visitorId
+      }
+    });
   }
 }

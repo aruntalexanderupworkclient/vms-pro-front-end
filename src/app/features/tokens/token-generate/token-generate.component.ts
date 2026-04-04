@@ -73,7 +73,8 @@ export class TokenGenerateComponent implements OnInit {
 
     this.tokenService.getAllTokens().subscribe(res => {
       const tokens = res.data.items;
-      const newId = Math.max(...tokens.map(t => t.id), 0) + 1;
+      // const newId = Math.max(...tokens.map(t => t.id), 0) + 1;
+      const newId = Math.max(tokens.filter(t=>t.issueTime.getDate() === new Date().getDate()).length, 0) + 1;
       const now = new Date();
       const expiry = new Date(now.getTime() + 2 * 60 * 60 * 1000); // default expiry 2 hours
       const experyExpectation = new Date(this.visitor.expectedDuration ?? now.getTime() + 2 * 60 * 60 * 1000);
@@ -82,9 +83,10 @@ export class TokenGenerateComponent implements OnInit {
         expiry.setTime(experyExpectation.getTime());
       }
 
+      const tokenNo = `TK-${now.getFullYear()}/${now.getMonth() + 1}/${now.getDate()}-${String(newId).padStart(4, '0')}`;
+
       this.generatedToken = {
-        id: newId,
-        tokenNo: `TK-${now.getFullYear()}-${String(newId).padStart(4, '0')}`,
+        tokenNo: tokenNo,
         visitorId: this.visitor.id,
         visitorName: this.visitor.name,
         type: this.selectedType.description,
