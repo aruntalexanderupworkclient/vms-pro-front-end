@@ -1,0 +1,47 @@
+<div class="org-dialog">
+  <div class="dialog-header">
+    <h2>{{ dialogTitle }}</h2>
+    <button class="icon-btn" (click)="onCancel()">
+      <span class="material-icons">close</span>
+    </button>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="dialog-body">
+      <div class="form-field">
+        <label class="field-label">Organisation Type <span class="required">*</span></label>
+        <select formControlName="type" class="field-input">
+          <option value="" disabled>Select organisation type</option>
+          <option *ngFor="let t of orgTypes" [value]="t.value">{{ t.value }}</option>
+        </select>
+        <div class="field-hint" *ngIf="loadingTypes">Loading types...</div>
+        <div class="field-error" *ngIf="form.get('type')?.touched && form.get('type')?.hasError('required')">
+          Organisation type is required
+        </div>
+      </div>
+
+      <div class="form-field">
+        <label class="field-label">Name <span class="required">*</span></label>
+        <input type="text" formControlName="name" placeholder="Enter organisation name" class="field-input">
+        <div class="field-error" *ngIf="form.get('name')?.touched && form.get('name')?.hasError('required')">
+          Name is required
+        </div>
+      </div>
+
+      <div class="form-field">
+        <label class="field-label">Address <span class="required">*</span></label>
+        <textarea formControlName="address" placeholder="Enter address" class="field-input textarea" rows="3"></textarea>
+        <div class="field-error" *ngIf="form.get('address')?.touched && form.get('address')?.hasError('required')">
+          Address is required
+        </div>
+      </div>
+    </div>
+
+    <div class="dialog-footer">
+      <button type="button" class="btn btn-secondary" (click)="onCancel()">Cancel</button>
+      <button type="submit" class="btn btn-primary" [disabled]="form.invalid || saving">
+        {{ saving ? 'Saving...' : submitLabel }}
+      </button>
+    </div>
+  </form>
+</div>

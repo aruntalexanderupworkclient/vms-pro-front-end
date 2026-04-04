@@ -2,10 +2,11 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { BaseApiService } from './base-api.service';
-import { ApiResponse, PagedResult, Organization } from '../models';
+import { ApiResponse, PagedResult } from '../models';
+import { OrganisationDto, CreateOrganisationDto, UpdateOrganisationDto } from '../models/organization.model';
 import { ApiEndpoints } from '../config';
 
-const EP = ApiEndpoints.Organizations;
+const EP = ApiEndpoints.Organisations;
 
 @Injectable({ providedIn: 'root' })
 export class OrganizationServiceProxy extends BaseApiService {
@@ -14,23 +15,27 @@ export class OrganizationServiceProxy extends BaseApiService {
     super(http);
   }
 
-  getAllOrganizations(page: number = 1, pageSize: number = 10, search: string = ''): Observable<ApiResponse<PagedResult<Organization>>> {
-    return this.Get<ApiResponse<PagedResult<Organization>>>(EP, 'GetAll', { page, pageSize, search });
+  getAll(page: number = 1, pageSize: number = 10, search: string = ''): Observable<ApiResponse<PagedResult<OrganisationDto>>> {
+     let inputParams: Record<string, any> = { page, pageSize };
+    if (search.trim().length > 0) {
+      inputParams['search'] = search;
+    }
+    return this.Get<ApiResponse<PagedResult<OrganisationDto>>>(EP, 'GetAll', inputParams);
   }
 
-  getOrganizationById(id: number): Observable<ApiResponse<Organization>> {
-    return this.Get<ApiResponse<Organization>>(EP, 'GetById', { id });
+  getById(id: string): Observable<ApiResponse<OrganisationDto>> {
+    return this.Get<ApiResponse<OrganisationDto>>(EP, 'GetById', { id });
   }
 
-  createOrganization(org: Organization): Observable<ApiResponse<Organization>> {
-    return this.Post<ApiResponse<Organization>>(EP, 'Create', org);
+  create(dto: CreateOrganisationDto): Observable<ApiResponse<OrganisationDto>> {
+    return this.Post<ApiResponse<OrganisationDto>>(EP, 'Create', dto);
   }
 
-  updateOrganization(id: number, org: Organization): Observable<ApiResponse<Organization>> {
-    return this.Put<ApiResponse<Organization>>(EP, 'Update', { ...org, id });
+  update(id: string, dto: UpdateOrganisationDto): Observable<ApiResponse<OrganisationDto>> {
+    return this.PutWithParams<ApiResponse<OrganisationDto>>(EP, 'Update', dto, { id });
   }
 
-  deleteOrganization(id: number): Observable<ApiResponse<void>> {
-    return this.Delete<ApiResponse<void>>(EP, 'Delete', { id });
+  delete(id: string): Observable<ApiResponse<object>> {
+    return this.Delete<ApiResponse<object>>(EP, 'Delete', { id });
   }
 }

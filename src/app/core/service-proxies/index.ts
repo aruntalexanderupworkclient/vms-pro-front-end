@@ -19,7 +19,7 @@
 export { ApiEndpoints, EndpointPair } from '../config';
 
 // ── Models (re-exported for backward compatibility) ──────────────────
-export { ApiResponse, PagedResult, Visitor, Token, Employee, Host, Appointment, User, UserStatus, CreateUserDto, UpdateUserDto, Role, Permission, Organization, EnumOptionDto, EnumGroupDto, AllEnumsDto, MdmType, MdmDto, CreateMdmDto, UpdateMdmDto } from '../models';
+export { ApiResponse, PagedResult, Visitor, Token, Employee, Host, Appointment, User, UserStatus, CreateUserDto, UpdateUserDto, Role, Permission, OrganisationDto, CreateOrganisationDto, UpdateOrganisationDto, EnumOptionDto, EnumGroupDto, AllEnumsDto, MdmType, MdmDto, CreateMdmDto, UpdateMdmDto } from '../models';
 
 // ── Service Proxies ──────────────────────────────────────────────────
 export { BaseApiService } from './base-api.service';

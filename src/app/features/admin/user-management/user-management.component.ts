@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { UserServiceProxy, RoleServiceProxy, User, UserStatus, Role, CreateUserDto, UpdateUserDto, MdmServiceProxy, MdmType, MdmDto } from '../../../core/service-proxies';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { UserServiceProxy, RoleServiceProxy, User, UserStatus, Role, CreateUserDto, UpdateUserDto, MdmServiceProxy, MdmType, MdmDto, OrganizationServiceProxy, OrganisationDto } from '../../../core/service-proxies';
 
 @Component({
   selector: 'app-user-management',
@@ -18,14 +19,17 @@ export class UserManagementComponent implements OnInit {
   showPanel = false;
   editMode = false;
   currentUser: User = this.getEmptyUser();
+  @ViewChild('userForm') userForm!: NgForm;
 
   userStatuses: MdmDto[] = [];
+  organisations: OrganisationDto[] = [];
 
-  constructor(private userService: UserServiceProxy, private roleService: RoleServiceProxy, private mdmService: MdmServiceProxy) { }
+  constructor(private userService: UserServiceProxy, private roleService: RoleServiceProxy, private mdmService: MdmServiceProxy, private organisationService: OrganizationServiceProxy) { }
 
   ngOnInit(): void {
     this.loadRoles();
     this.loadUserStatus();
+    this.loadOrganisations();
     this.loadUsers();
   }
 
@@ -45,6 +49,12 @@ export class UserManagementComponent implements OnInit {
   loadUserStatus(): void {
     this.mdmService.getAll(MdmType.UserStatus).subscribe(res => {
       this.userStatuses = res.data;
+    });
+  }
+
+  loadOrganisations(): void {
+    this.organisationService.getAll(1, 100).subscribe(res => {
+      this.organisations = res.data.items;
     });
   }
 
@@ -74,7 +84,11 @@ export class UserManagementComponent implements OnInit {
     this.showPanel = false;
   }
 
-  saveUser(): void {
+  saveUser(form: NgForm): void {
+    if (form.invalid) {
+      Object.values(form.controls).forEach(c => c.markAsTouched());
+      return;
+    }
     if (this.editMode) {
       const updateDto = this.mapToUpdateUserDto(this.currentUser);
       this.userService.updateUser(this.currentUser.id, updateDto).subscribe(() => {

@@ -35,7 +35,7 @@ export const ApiEndpoints = {
   Users:         { inMemory: 'users',         api: 'Users' }         as EndpointPair,
   Roles:         { inMemory: 'roles',         api: 'Roles' }         as EndpointPair,
   Permissions:   { inMemory: 'permissions',   api: 'Permissions' }   as EndpointPair,
-  Organizations: { inMemory: 'organizations', api: 'Organizations' } as EndpointPair,
+  Organisations: { inMemory: 'organisations', api: 'Organisations' } as EndpointPair,
   Enums:         { inMemory: 'enums',         api: 'Enums' }         as EndpointPair,
   Mdm:           { inMemory: 'mdm',           api: 'Mdm' }           as EndpointPair,
 };

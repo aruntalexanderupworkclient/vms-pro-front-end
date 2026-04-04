@@ -42,6 +42,7 @@ export class SidebarComponent implements OnInit {
     },
     { label: 'Admin', icon: '', route: '', section: true },
     { label: 'User Management', icon: 'manage_accounts', route: '/admin/users' },
+    { label: 'Organisation', icon: 'corporate_fare', route: '/admin/organisations' },
     { label: 'Role Management', icon: 'shield', route: '/admin/roles' },
     { label: 'Permission', icon: 'lock', route: '/admin/permissions' },
     { label: '', icon: '', route: '', divider: true },
