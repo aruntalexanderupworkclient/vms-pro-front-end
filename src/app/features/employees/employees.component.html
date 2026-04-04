@@ -34,8 +34,8 @@
           <td>{{ emp.designation }}</td>
           <td><span class="badge badge-blue">{{ emp.employeeId }}</span></td>
           <td>
-            <span [class]="emp.status === 'active' ? 'badge badge-green' : 'badge badge-red'">
-              {{ emp.status }}
+            <span [class]="emp.status ? 'badge badge-green' : 'badge badge-red'">
+              {{ emp.status ? 'Active' : 'Inactive' }}
             </span>
           </td>
           <td>
@@ -66,8 +66,8 @@
       <div class="form-group">
         <label>Status</label>
         <select [(ngModel)]="currentEmployee.status" name="status">
-          <option value="active">Active</option>
-          <option value="inactive">Inactive</option>
+          <option [ngValue]="true">Active</option>
+          <option [ngValue]="false">Inactive</option>
         </select>
       </div>
       <div class="panel-footer">

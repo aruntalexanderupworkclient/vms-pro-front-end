@@ -1,10 +1,10 @@
 export interface Employee {
     id: number;
     name: string;
-    department: string;
-    designation: string;
+    department?: string;
+    designation?: string;
     employeeId: string;
-    status: string;
-    phone: string;
-    email: string;
+    status: boolean;
+    phone?: string;
+    email?: string;
 }

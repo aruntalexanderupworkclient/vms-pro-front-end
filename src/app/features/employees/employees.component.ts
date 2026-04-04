@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { EmployeeServiceProxy } from '../../core/service-proxies';
+import { Employee, EmployeeServiceProxy } from '../../core/service-proxies';
 
 @Component({
   selector: 'app-employees',
@@ -7,12 +7,12 @@ import { EmployeeServiceProxy } from '../../core/service-proxies';
   styleUrls: ['./employees.component.scss']
 })
 export class EmployeesComponent implements OnInit {
-  employees: any[] = [];
-  filteredEmployees: any[] = [];
+  employees: Employee[] = [];
+  filteredEmployees: Employee[] = [];
   searchTerm = '';
   showPanel = false;
   editMode = false;
-  currentEmployee: any = this.getEmpty();
+  currentEmployee: Employee = this.getEmpty();
 
   constructor(private employeeService: EmployeeServiceProxy) {}
 
@@ -31,7 +31,7 @@ export class EmployeesComponent implements OnInit {
     this.filteredEmployees = this.employees.filter(e =>
       !this.searchTerm ||
       e.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      e.department.toLowerCase().includes(this.searchTerm.toLowerCase())
+      e.department?.toLowerCase().includes(this.searchTerm.toLowerCase())
     );
   }
 
@@ -41,7 +41,7 @@ export class EmployeesComponent implements OnInit {
     this.showPanel = true;
   }
 
-  openEdit(emp: any): void {
+  openEdit(emp: Employee): void {
     this.currentEmployee = { ...emp };
     this.editMode = true;
     this.showPanel = true;
@@ -65,7 +65,7 @@ export class EmployeesComponent implements OnInit {
     }
   }
 
-  deleteEmployee(emp: any): void {
+  deleteEmployee(emp: Employee): void {
     if (confirm(`Delete employee "${emp.name}"?`)) {
       this.employeeService.deleteEmployee(emp.id).subscribe(() => this.loadEmployees());
     }
@@ -77,7 +77,7 @@ export class EmployeesComponent implements OnInit {
     return parts.length >= 2 ? (parts[0][0] + parts[1][0]).toUpperCase() : parts[0][0].toUpperCase();
   }
 
-  private getEmpty(): any {
-    return { id: 0, name: '', department: '', designation: '', employeeId: '', status: 'active', phone: '', email: '' };
+  private getEmpty(): Employee {
+    return { id: 0, name: '', employeeId: '', status: true };
   }
 }
