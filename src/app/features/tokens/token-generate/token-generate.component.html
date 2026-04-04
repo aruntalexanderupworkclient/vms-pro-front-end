@@ -14,8 +14,8 @@
     <div class="type-grid">
       <div class="type-card"
            *ngFor="let tt of tokenTypes"
-           [class.selected]="selectedType === tt.type"
-           (click)="selectedType = tt.type">
+           [class.selected]="selectedType.type === tt.type"
+           (click)="selectedType = tt">
         <span class="material-icons">{{ tt.icon }}</span>
         <strong>{{ tt.type }}</strong>
         <span class="text-sm text-secondary">{{ tt.description }}</span>

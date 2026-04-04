@@ -15,3 +15,9 @@ export interface Visitor {
     expectedDuration: string;
     orgType: string;
 }
+
+export class Visitor {
+    constructor(init?: Partial<Visitor>) {
+        Object.assign(this, init);
+    }
+}
