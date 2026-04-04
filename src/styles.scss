@@ -276,3 +276,22 @@ h3 { font-size: $font-h3; font-weight: $font-weight-medium; color: $text-primary
   font-family: 'Inter', sans-serif;
   border-radius: $radius-btn !important;
 }
+
+// ── Snackbar Styles ──────────────────────────────────────────────────
+.snackbar-success {
+  background-color: #10B981 !important;
+  color: #fff !important;
+
+  .mat-simple-snackbar-action {
+    color: #fff !important;
+  }
+}
+
+.snackbar-error {
+  background-color: #EF4444 !important;
+  color: #fff !important;
+
+  .mat-simple-snackbar-action {
+    color: #fff !important;
+  }
+}

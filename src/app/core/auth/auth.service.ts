@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { environment } from '../../../environments/environment';
 import { UserServiceProxy, User, UserStatus } from '../service-proxies';
 
 @Injectable({ providedIn: 'root' })
@@ -9,7 +11,11 @@ export class AuthService {
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
 
-  constructor(private userService: UserServiceProxy, private router: Router) {
+  constructor(
+    private http: HttpClient,
+    private userService: UserServiceProxy,
+    private router: Router
+  ) {
     const stored = sessionStorage.getItem('vms_user');
     if (stored) {
       this.currentUserSubject.next(JSON.parse(stored));
@@ -54,6 +60,37 @@ export class AuthService {
         }
         return null;
       })
+    );
+  }
+
+  /**
+   * Login via real API with username/password credentials.
+   * POST /api/auth/login → { token, user }
+   */
+  loginWithCredentials(credentials: { email: string; password: string }): Observable<{ token: string; user: User }> {
+    return this.http.post<{ token: string; user: User }>(
+      `${environment.apiUrl}/auth/login`,
+      credentials
+    ).pipe(
+      tap(res => this.setAuthSession(res.token, res.user))
+    );
+  }
+
+  /**
+   * Login using Google OAuth credentials.
+   * Expects a response from Google Sign-In with an ID token.
+   * POST /api/auth/google-login → { token, user }
+   * @param response 
+   * @returns 
+   */
+  loginWithGoogleCredentials(response: any): Observable<{ token: string; user: User }> {
+    const idToken = response.credential;
+
+    return this.http.post<{ token: string; user: User }>(
+      `${environment.apiUrl}/auth/google-login`,
+      { idToken }
+    ).pipe(
+      tap(res => this.setAuthSession(res.token, res.user))
     );
   }
 
