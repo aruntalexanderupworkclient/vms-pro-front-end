@@ -47,7 +47,7 @@ export class TokenGenerateComponent implements OnInit {
         const items = (res.data ?? []).filter(item => item.isActive);
         this.tokenTypes = items.map(item => ({
           type: item.value,
-          icon: resolveIcon(item.value),
+          icon: resolveIcon(item.code),
           description: item.code
         }));
         if (this.tokenTypes.length > 0) {
